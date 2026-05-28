@@ -1,1 +1,0 @@
-# Ger-NRW-VC-Bewerbungs-Fragen-
