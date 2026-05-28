@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GER | NRW VC — Team Bewerbung</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://unpkg.com/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+<style>
+:root{
+  --bg:#05080f;--s1:#0d1520;--s2:#121e2e;--s3:#182740;
+  --bd:rgba(255,255,255,.055);--bd2:rgba(255,255,255,.1);--bd3:rgba(255,255,255,.18);
+  --gold:#f59e0b;--gd2:#fbbf24;--gd3:#fde68a;
+  --bgo:rgba(245,158,11,.15);--sgo:rgba(245,158,11,.07);
+  --blue:#3b82f6;--bl2:#60a5fa;--bl3:#93c5fd;
+  --bbl:rgba(59,130,246,.15);--sbl:rgba(59,130,246,.07);
+  --green:#10b981;--gn2:#34d399;
+  --bgn:rgba(16,185,129,.15);--sgn:rgba(16,185,129,.07);
+  --red:#ef4444;--rd2:#f87171;
+  --brd:rgba(239,68,68,.15);--srd:rgba(239,68,68,.07);
+  --purple:#8b5cf6;--pr2:#a78bfa;--bpr:rgba(139,92,246,.15);
+  --t1:#f1f5f9;--t2:#94a3b8;--t3:#64748b;--t4:#334155;
+  --r:12px;--r2:18px;--r3:24px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--t1);min-height:100vh;overflow-x:hidden}
+.mesh{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(ellipse 55% 45% at 8% 18%,rgba(245,158,11,.09),transparent 62%),
+    radial-gradient(ellipse 45% 38% at 88% 82%,rgba(59,130,246,.07),transparent 58%),
+    radial-gradient(ellipse 38% 55% at 50% 108%,rgba(139,92,246,.05),transparent 62%);
+  animation:mDrift 22s ease-in-out infinite alternate}
+@keyframes mDrift{from{transform:scale(1)}to{transform:scale(1.04) translate(6px,-6px)}}
+.gridbg{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(245,158,11,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(245,158,11,.018) 1px,transparent 1px);
+  background-size:48px 48px}
+#confetti{position:fixed;inset:0;z-index:9999;pointer-events:none;display:none}
+.tbar{position:fixed;top:0;left:0;right:0;height:2px;z-index:500}
+.tbar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--gold),var(--blue));transition:width .35s ease;box-shadow:0 0 12px rgba(245,158,11,.6)}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(18px);z-index:9000;
+  background:var(--s2);border:1px solid var(--bd2);border-radius:100px;
+  padding:8px 20px;font-size:.76rem;color:var(--t1);opacity:0;transition:all .28s ease;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.kb-ov{position:fixed;inset:0;z-index:8000;background:rgba(0,0,0,.72);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center}
+.kb-ov.show{display:flex}
+.kb-box{background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r3);padding:2rem;max-width:400px;width:90%}
+.kb-tit{font-family:"Syne",sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:1rem}
+.kb-row{display:flex;align-items:center;gap:12px;margin-bottom:.5rem}
+.kb-key{background:var(--s3);border:1px solid var(--bd3);border-radius:7px;padding:3px 10px;font-family:"Syne",sans-serif;font-size:.7rem;font-weight:700;color:var(--t1);min-width:34px;text-align:center;flex-shrink:0}
+.kb-desc{font-size:.78rem;color:var(--t2)}
+.kb-close{width:100%;margin-top:1rem;padding:9px;background:var(--s2);border:1px solid var(--bd2);border-radius:var(--r);color:var(--t2);font-family:"DM Sans",sans-serif;font-size:.82rem;cursor:pointer;transition:all .15s}
+.kb-close:hover{background:var(--s3);color:var(--t1)}
+nav{position:fixed;top:2px;left:0;right:0;z-index:400;height:56px;
+  display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;
+  background:rgba(5,8,15,.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--gold),#d97706);
+  display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0;box-shadow:0 0 14px rgba(245,158,11,.45)}
+.nav-txt{display:flex;flex-direction:column;line-height:1.1}
+.nav-main{font-family:"Syne",sans-serif;font-weight:800;font-size:.88rem;letter-spacing:-.01em;
+  background:linear-gradient(135deg,var(--gd2),#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-sub{font-size:.57rem;color:var(--t3);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.nav-r{display:flex;align-items:center;gap:5px}
+.chip{display:flex;align-items:center;gap:5px;background:var(--s1);border:1px solid var(--bd2);border-radius:100px;padding:3px 11px;font-size:.67rem;color:var(--t2);white-space:nowrap}
+.chip b{color:var(--t1);font-weight:500}
+.pdot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:pd 2s ease infinite;box-shadow:0 0 6px rgba(245,158,11,.5)}
+@keyframes pd{0%,100%{opacity:1}50%{opacity:.3}}
+.tv{font-family:"Syne",sans-serif;font-size:.77rem;font-weight:700;letter-spacing:.04em;min-width:44px}
+.tv.w{color:var(--gd2)}.tv.c{color:var(--rd2)}
+.ibc{width:26px;height:26px;border-radius:8px;border:1px solid var(--bd2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.77rem;color:var(--t2);transition:all .15s}
+.ibc:hover{background:var(--s2);color:var(--t1);border-color:var(--bd3)}
+.ibc.muted{opacity:.35}
+.page{display:none;min-height:100vh;padding-top:58px;position:relative;z-index:1}
+.page.active{display:block;animation:pgIn .4s cubic-bezier(.4,0,.2,1)}
+@keyframes pgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#pg-start{display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:80px 2rem}
+#pg-start.active{display:flex}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.28);border-radius:100px;padding:6px 18px;font-size:.69rem;color:var(--gd2);margin-bottom:1.8rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;animation:eyeIn .9s ease .2s both}
+@keyframes eyeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+.hero-h{font-family:"Syne",sans-serif;font-size:clamp(2.4rem,6vw,4.2rem);font-weight:800;line-height:1.02;letter-spacing:-.04em;margin-bottom:.9rem;animation:heroIn .9s ease .3s both}
+@keyframes heroIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.t-w{color:#fff}
+.t-g{background:linear-gradient(135deg,var(--gd2) 0%,#fff 40%,var(--bl2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:.93rem;color:var(--t2);max-width:520px;margin:0 auto 2.4rem;line-height:1.78;animation:heroIn .9s ease .45s both}
+.start-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:860px;width:100%;animation:heroIn .9s ease .55s both}
+.start-form,.hist-panel{background:rgba(13,21,32,.82);border:1px solid var(--bd2);border-radius:var(--r3);padding:1.7rem;backdrop-filter:blur(20px)}
+.form-title{font-family:"Syne",sans-serif;font-size:.88rem;font-weight:700;color:var(--gd2);margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.lbl{display:block;font-size:.66rem;color:var(--t3);margin-bottom:4px;font-weight:600;letter-spacing:.04em;text-transform:uppercase}
+.ifield{width:100%;padding:10px 13px;background:rgba(0,0,0,.3);border:1px solid var(--bd2);border-radius:var(--r);color:var(--t1);font-family:"DM Sans",sans-serif;font-size:.87rem;outline:none;margin-bottom:.82rem;transition:border-color .2s,box-shadow .2s}
+.ifield::placeholder{color:var(--t4)}
+.ifield:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(245,158,11,.12)}
+.btn-go{width:100%;padding:12px;background:linear-gradient(135deg,#d97706,var(--gold));border:none;border-radius:var(--r);color:#000;font-family:"DM Sans",sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 18px rgba(245,158,11,.3);letter-spacing:.01em}
+.btn-go:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 26px rgba(245,158,11,.42)}
+.btn-go:disabled{opacity:.3;cursor:not-allowed}
+.hist-title{font-family:"Syne",sans-serif;font-size:.88rem;font-weight:700;color:#fff;margin-bottom:1rem;display:flex;align-items:center;gap:7px}
+.hp-empty{font-size:.77rem;color:var(--t4);text-align:center;padding:1.4rem 0}
+.hentry{background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:9px 12px;margin-bottom:7px;display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;cursor:pointer;transition:all .15s}
+.hentry:hover{border-color:var(--bd2);background:var(--s3)}
+.he-name{font-family:"Syne",sans-serif;font-size:.82rem;font-weight:700;color:var(--t1);margin-bottom:1px}
+.he-meta{font-size:.65rem;color:var(--t3)}
+.he-score{font-family:"Syne",sans-serif;font-size:1.15rem;font-weight:800}
+.he-verd{font-size:.62rem;font-weight:600;margin-top:1px;text-align:right}
+.saved-note{font-size:.65rem;color:var(--t4);text-align:center;margin-top:.7rem}
+.hstats{display:flex;gap:1.8rem;margin-top:2rem;animation:heroIn .9s ease .75s both}
+.hs-n{font-family:"Syne",sans-serif;font-size:1.4rem;font-weight:800;color:var(--gd2)}
+.hs-l{font-size:.62rem;color:var(--t3);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+#pg-main{padding:58px 0 130px}
+.mwrap{max-width:920px;margin:0 auto;padding:1.8rem 1.5rem}
+.sec-banner{display:flex;align-items:center;gap:12px;margin:2rem 0 1rem;padding:12px 16px;border-radius:var(--r2);border:1px solid}
+.sb-icon{font-size:1.35rem;flex-shrink:0}
+.sb-info{flex:1}
+.sb-title{font-family:"Syne",sans-serif;font-size:.98rem;font-weight:700;margin-bottom:2px}
+.sb-sub{font-size:.7rem;color:var(--t3)}
+.sb-pts{font-family:"Syne",sans-serif;font-size:.82rem;font-weight:700;white-space:nowrap;text-align:right}
+.sb-pts span{font-size:1.35rem;font-weight:800;display:block;line-height:1}
+.sb-gold{background:rgba(245,158,11,.07);border-color:rgba(245,158,11,.22)}
+.sb-blue{background:rgba(59,130,246,.07);border-color:rgba(59,130,246,.22)}
+.div-sep{display:flex;align-items:center;gap:12px;margin:2rem 0 1rem}
+.div-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--bd2),transparent)}
+.div-lbl{font-size:.62rem;font-weight:600;color:var(--t4);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
+.sec-filter{display:flex;gap:6px;margin-bottom:1rem;padding:10px 12px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);flex-wrap:wrap}
+.sf-btn{padding:5px 13px;border-radius:100px;border:1px solid var(--bd2);background:transparent;color:var(--t3);font-family:"DM Sans",sans-serif;font-size:.7rem;font-weight:500;cursor:pointer;transition:all .15s}
+.sf-btn:hover{background:var(--s2);color:var(--t1)}
+.sf-btn.on{border-color:transparent;font-weight:600}
+.sf-prog{font-size:.6rem;opacity:.7;margin-left:2px}
+.sc-info{background:var(--s1);border:1px solid rgba(245,158,11,.18);border-radius:var(--r2);padding:.9rem 1rem;margin-bottom:1rem}
+.sci-title{font-family:"Syne",sans-serif;font-size:.76rem;font-weight:700;color:var(--gd2);margin-bottom:.65rem}
+.sci-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sci-item{background:var(--s2);border-radius:8px;padding:7px 10px;text-align:center}
+.sci-pts{font-family:"Syne",sans-serif;font-size:.95rem;font-weight:700}
+.sci-lbl{font-size:.61rem;color:var(--t3);margin-top:1px}
+.kb-hint{font-size:.6rem;color:var(--t4);margin-bottom:.8rem;font-style:italic;text-align:center}
+.q-list{display:flex;flex-direction:column;gap:5px}
+.qc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px;display:grid;align-items:start;gap:9px;transition:all .18s;position:relative;overflow:hidden}
+.qc-5{grid-template-columns:26px 1fr auto}
+.qc-3{grid-template-columns:26px 1fr auto}
+.qc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:transparent;border-radius:0 2px 2px 0;transition:background .2s}
+.qc:hover{border-color:var(--bd2);background:var(--s2)}
+.qc.active-q{border-color:rgba(245,158,11,.4);box-shadow:0 0 0 2px rgba(245,158,11,.1)}
+.qc.done{border-color:rgba(59,130,246,.18);background:var(--sbl)}.qc.done::before{background:var(--blue)}
+.qc.sc-hi{border-color:rgba(16,185,129,.2);background:var(--sgn)}.qc.sc-hi::before{background:var(--green)}
+.qc.sc-lo{border-color:rgba(245,158,11,.2);background:var(--sgo)}.qc.sc-lo::before{background:var(--gold)}
+.qc.sc-0{border-color:rgba(100,116,139,.14)}.qc.sc-0::before{background:var(--t4)}
+.qc.sc-max{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.06)}.qc.sc-max::before{background:var(--gold)}
+.qc.flagged{border-color:rgba(239,68,68,.3)!important;background:var(--srd)!important}
+.qc.flagged::after{content:"F";position:absolute;top:7px;right:8px;font-size:.55rem;color:var(--rd2);font-weight:700}
+.qc.hidden-q{display:none}
+.q-num{font-family:"Syne",sans-serif;font-size:.6rem;font-weight:700;color:var(--t4);text-align:center;padding-top:6px;line-height:1.1}
+.qdot{width:5px;height:5px;border-radius:50%;margin:2px auto 0}
+.q-body{display:flex;flex-direction:column;gap:3px}
+.qt{font-size:.8rem;color:var(--t2);line-height:1.52;cursor:pointer;transition:color .15s}
+.qt:hover{color:var(--t1)}
+.q-acts{display:flex;gap:8px;align-items:center;margin-top:2px}
+.ntb{font-size:.63rem;color:var(--t4);cursor:pointer;transition:color .15s;text-decoration:underline;text-decoration-style:dotted}
+.ntb:hover{color:var(--gd2)}
+.flb{font-size:.68rem;cursor:pointer;opacity:.35;transition:opacity .15s;background:none;border:none;padding:0;line-height:1;color:var(--rd2)}
+.flb:hover,.qc.flagged .flb{opacity:1}
+.qnote{width:100%;padding:5px 9px;background:rgba(0,0,0,.25);border:1px solid var(--bd2);border-radius:7px;color:var(--t2);font-family:"DM Sans",sans-serif;font-size:.72rem;resize:vertical;outline:none;transition:border-color .2s;min-height:38px;display:none;margin-top:2px}
+.qnote:focus{border-color:var(--gold);color:var(--t1)}
+.qnote.open{display:block;animation:nIn .18s ease}
+@keyframes nIn{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:translateY(0)}}
+.q-right{display:flex;flex-direction:column;align-items:flex-end;gap:3px}
+.q-btns{display:flex;gap:2px}
+.sbb{height:27px;border-radius:7px;border:1px solid var(--bd2);background:transparent;color:var(--t4);font-size:.73rem;font-weight:700;font-family:"Syne",sans-serif;cursor:pointer;transition:all .11s;display:flex;align-items:center;justify-content:center;padding:0 6px;min-width:26px}
+.sbb:hover{background:var(--s3);color:var(--t1);transform:scale(1.06)}
+.sbb:active{transform:scale(.9)}
+.sbb.a0{background:#1e2736;border-color:#374151;color:#9ca3af}
+.sbb.a1{background:#3d1505;border-color:#92400e;color:#fcd34d}
+.sbb.a2{background:#3a1a05;border-color:#b45309;color:#fde68a}
+.sbb.a3{background:#162a4a;border-color:var(--blue);color:var(--bl3)}
+.sbb.a4{background:#043d2e;border-color:var(--green);color:var(--gn2)}
+.sbb.a5{background:#3d2a00;border-color:var(--gold);color:var(--gd2);box-shadow:0 0 9px rgba(245,158,11,.3)}
+.sbb.b0{background:#1e2736;border-color:#374151;color:#9ca3af}
+.sbb.b1{background:#162a4a;border-color:var(--blue);color:var(--bl3)}
+.sbb.b2{background:#043d2e;border-color:var(--green);color:var(--gn2)}
+.sbb.b3{background:#3d2a00;border-color:var(--gold);color:var(--gd2);box-shadow:0 0 9px rgba(245,158,11,.3)}
+.max-b{font-size:.57rem;color:var(--t4);text-align:center;font-family:"Syne",sans-serif}
+.bm-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.bmc{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:10px 12px;display:flex;align-items:center;gap:8px;transition:all .18s}
+.bmc.bon{border-color:rgba(16,185,129,.32);background:var(--sgn)}
+.bmc.mal{border-color:rgba(239,68,68,.32);background:var(--srd)}
+.bm-lbl{flex:1;font-size:.77rem;color:var(--t2);line-height:1.3}
+.bm-pts{font-family:"Syne",sans-serif;font-size:.78rem;font-weight:700}
+.bm-ctrl{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.cc{width:23px;height:23px;border-radius:6px;border:1px solid var(--bd2);background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;transition:all .11s;color:var(--t2);line-height:1;user-select:none}
+.cc:active{transform:scale(.86)}
+.cc.p:hover{background:var(--bgn);border-color:rgba(16,185,129,.3);color:var(--gn2)}
+.cc.m:hover{background:var(--brd);border-color:rgba(239,68,68,.3);color:var(--rd2)}
+.ccnt{font-family:"Syne",sans-serif;font-size:.87rem;font-weight:700;min-width:16px;text-align:center}
+.live-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);padding:11px 14px;display:flex;align-items:center;gap:12px;transition:border-color .2s;margin-bottom:5px}
+.live-card:hover{border-color:var(--bd2)}
+.live-lbl{font-size:.8rem;color:var(--t2);min-width:150px;font-weight:500}
+.live-track{flex:1}
+input[type=range]{-webkit-appearance:none;width:100%;height:4px;border-radius:2px;background:var(--s3);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d97706);cursor:pointer;box-shadow:0 2px 7px rgba(245,158,11,.45);transition:transform .1s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.18)}
+.live-vw{font-family:"Syne",sans-serif;font-size:.9rem;font-weight:700;min-width:32px;text-align:right}
+.stars{display:flex;gap:2px;margin-top:3px}
+.star{font-size:.65rem;transition:all .12s;color:var(--t4)}
+.star.on{color:var(--gd2);transform:scale(1.12)}
+.sbar{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(5,8,15,.92);backdrop-filter:blur(24px);border-top:1px solid var(--bd2);padding:8px 1.5rem;display:none;align-items:center;gap:.8rem;justify-content:space-between}
+.sbar.show{display:flex}
+.sb-met{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.met{display:flex;flex-direction:column;align-items:center;min-width:48px}
+.met-l{font-size:.54rem;text-transform:uppercase;letter-spacing:.07em;color:var(--t4);margin-bottom:1px}
+.met-v{font-family:"Syne",sans-serif;font-size:.93rem;font-weight:700}
+.met-div{width:1px;height:22px;background:var(--bd2)}
+.vtag{padding:6px 14px;border-radius:100px;font-family:"Syne",sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.04em;white-space:nowrap;transition:all .3s;border:1px solid}
+.vt-none{background:var(--s2);color:var(--t4);border-color:var(--bd)}
+.vt-top{background:rgba(245,158,11,.14);color:var(--gd2);border-color:rgba(245,158,11,.3);box-shadow:0 0 12px rgba(245,158,11,.14)}
+.vt-sehr{background:rgba(16,185,129,.12);color:var(--gn2);border-color:rgba(16,185,129,.28)}
+.vt-best{background:rgba(59,130,246,.1);color:var(--bl2);border-color:rgba(59,130,246,.22)}
+.vt-knapp{background:rgba(139,92,246,.1);color:var(--pr2);border-color:rgba(139,92,246,.22)}
+.vt-nicht{background:rgba(239,68,68,.1);color:var(--rd2);border-color:rgba(239,68,68,.22)}
+.vt-deut{background:rgba(239,68,68,.18);color:#fca5a5;border-color:rgba(239,68,68,.3)}
+.btn-abs{padding:8px 18px;background:linear-gradient(135deg,#d97706,var(--gold));border:none;border-radius:var(--r);color:#000;font-family:"DM Sans",sans-serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:0 4px 13px rgba(245,158,11,.28)}
+.btn-abs:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 22px rgba(245,158,11,.38)}
+.btn-abs:disabled{opacity:.28;cursor:not-allowed;transform:none}
+.save-ind{font-size:.6rem;color:var(--t4);display:flex;align-items:center;gap:4px}
+.sdot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+#pg-wrap{padding:58px 0 70px;display:none}
+#pg-wrap.active{display:block}
+.wwrap{max-width:980px;margin:0 auto;padding:1.8rem 1.5rem}
+.w-hero{text-align:center;padding:2rem;border-bottom:1px solid var(--bd);margin-bottom:1.3rem;position:relative;overflow:hidden}
+.w-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(245,158,11,.07),transparent 70%);pointer-events:none}
+.w-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bgo);border:1px solid rgba(245,158,11,.22);border-radius:100px;padding:4px 13px;font-size:.64rem;color:var(--gd2);margin-bottom:1rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.w-name{font-family:"Syne",sans-serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:.25rem}
+.w-meta{font-size:.72rem;color:var(--t3);margin-bottom:.15rem}
+.w-dur{font-size:.72rem;color:var(--t3);margin-bottom:1.5rem}
+.w-dur span{color:var(--gd2);font-weight:600}
+.score-box{display:inline-flex;flex-direction:column;align-items:center;padding:1.7rem 3.2rem;background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r3);position:relative;overflow:hidden;box-shadow:0 0 50px rgba(245,158,11,.07);margin-bottom:1.5rem}
+.score-box::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--blue),transparent)}
+.sc-big{font-family:"Syne",sans-serif;font-size:5rem;font-weight:800;line-height:1;letter-spacing:-.04em;background:linear-gradient(135deg,var(--gd2) 0%,#fff 50%,var(--bl2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sc-sub{font-size:.64rem;color:var(--t3);margin-top:3px;text-transform:uppercase;letter-spacing:.08em}
+.verd-big{margin-top:.9rem;padding:8px 26px;border-radius:100px;font-family:"Syne",sans-serif;font-size:.93rem;font-weight:700;letter-spacing:.02em;border:1px solid}
+.verd-explain{font-size:.77rem;color:var(--t2);margin-top:.55rem;max-width:420px;line-height:1.55;font-style:italic}
+.sec-breakdown{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.sbd{border-radius:var(--r2);padding:1.1rem;position:relative;overflow:hidden}
+.sbd::before{content:"";position:absolute;top:0;left:0;right:0;height:2px}
+.sbd-g{background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2)}.sbd-g::before{background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.sbd-b{background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2)}.sbd-b::before{background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+.sbd-icon{font-size:1.2rem;margin-bottom:.35rem}
+.sbd-title{font-family:"Syne",sans-serif;font-size:.77rem;font-weight:700;margin-bottom:3px}
+.sbd-score{font-family:"Syne",sans-serif;font-size:2rem;font-weight:800;line-height:1}
+.sbd-max{font-size:.68rem;color:var(--t3)}
+.sbd-bar{background:var(--s3);border-radius:3px;height:5px;overflow:hidden;margin-top:.5rem}
+.sbd-fill{height:100%;border-radius:3px;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+.kpi{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:.9rem;text-align:center;transition:all .18s}
+.kpi:hover{border-color:var(--bd2);transform:translateY(-2px)}
+.kpi-l{font-size:.6rem;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;font-weight:600}
+.kpi-v{font-family:"Syne",sans-serif;font-size:1.5rem;font-weight:800;line-height:1}
+.kpi-s{font-size:.62rem;color:var(--t3);margin-top:2px}
+.verd-scale{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:1rem 1.1rem;margin-bottom:12px}
+.vs-title{font-family:"Syne",sans-serif;font-size:.77rem;font-weight:700;color:#fff;margin-bottom:.7rem}
+.vs-row{display:flex;align-items:center;gap:10px;padding:5px 0;border-bottom:1px solid var(--bd)}
+.vs-row:last-child{border-bottom:none}
+.vs-range{font-family:"Syne",sans-serif;font-size:.7rem;font-weight:700;min-width:50px;color:var(--t2)}
+.vs-icon{font-size:.88rem;flex-shrink:0}
+.vs-label{font-family:"Syne",sans-serif;font-size:.73rem;font-weight:700;min-width:120px}
+.vs-desc{font-size:.68rem;color:var(--t3);flex:1}
+.vs-cur{font-size:.66rem;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--bgo);color:var(--gd2);white-space:nowrap}
+.sw-row{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+.sw-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:.9rem 1rem}
+.sw-head{display:flex;align-items:center;gap:7px;margin-bottom:.6rem}
+.sw-tit{font-family:"Syne",sans-serif;font-size:.78rem;font-weight:700}
+.sw-item{display:flex;align-items:flex-start;gap:7px;padding:4px 6px;border-radius:7px;transition:background .12s}
+.sw-item:hover{background:var(--s2)}
+.sw-num{font-family:"Syne",sans-serif;font-size:.58rem;font-weight:700;color:var(--t4);min-width:18px;padding-top:2px}
+.sw-txt{font-size:.7rem;color:var(--t2);flex:1;line-height:1.38}
+.sw-sc{font-family:"Syne",sans-serif;font-size:.8rem;font-weight:700}
+.fazit-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:1.2rem;margin-bottom:12px;position:relative;overflow:hidden}
+.fazit-card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),var(--blue),transparent)}
+.fazit-tit{font-family:"Syne",sans-serif;font-size:.78rem;font-weight:700;color:#fff;margin-bottom:.65rem;display:flex;align-items:center;gap:7px}
+.fazit-body{font-size:.8rem;color:var(--t2);line-height:1.78}
+.fazit-body p{margin-bottom:.5rem}.fazit-body p:last-child{margin-bottom:0}
+.fazit-body strong{color:var(--t1);font-weight:500}
+.fgn{color:var(--gn2)}.frd{color:var(--rd2)}.fam{color:var(--gd2)}.fbl{color:var(--bl2)}.fpr{color:var(--pr2)}
+.flagged-sec{background:rgba(245,158,11,.06);border:1px solid rgba(245,158,11,.18);border-radius:var(--r2);padding:.9rem 1rem;margin-bottom:12px}
+.fs-tit{font-family:"Syne",sans-serif;font-size:.75rem;font-weight:700;color:var(--gd2);margin-bottom:.55rem;display:flex;align-items:center;gap:7px}
+.fs-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(245,158,11,.1);font-size:.74rem}
+.fs-item:last-child{border-bottom:none}
+.fs-num{font-family:"Syne",sans-serif;font-size:.62rem;font-weight:700;color:var(--gd2);min-width:22px}
+.charts-2{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:11px}
+.chart-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:1.1rem}
+.cc-tit{font-family:"Syne",sans-serif;font-size:.76rem;font-weight:700;color:#fff;margin-bottom:1px}
+.cc-sub{font-size:.63rem;color:var(--t3);margin-bottom:.7rem}
+.cc-box{position:relative;height:210px}
+.cc-boxw{position:relative;height:175px}
+.det-card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);margin-bottom:8px;overflow:hidden}
+.det-head{padding:10px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;cursor:pointer;transition:background .12s;user-select:none}
+.det-head:hover{background:var(--s2)}
+.det-icon{font-size:.86rem}
+.det-tit{font-family:"Syne",sans-serif;font-size:.78rem;font-weight:700;color:#fff;flex:1}
+.det-chev{font-size:.7rem;color:var(--t3);transition:transform .28s}
+.det-head.open .det-chev{transform:rotate(180deg)}
+.det-body{padding:12px 14px;display:none}
+.det-body.open{display:block}
+.qsr{display:grid;grid-template-columns:22px 1fr auto;align-items:start;gap:7px;padding:5px 0;border-bottom:1px solid var(--bd)}
+.qsr:last-child{border-bottom:none}
+.qsr-n{font-size:.6rem;font-weight:700;color:var(--t4);text-align:center;padding-top:2px}
+.qsr-t{color:var(--t2);line-height:1.4;font-size:.76rem}
+.qsr-note{font-size:.67rem;color:var(--t3);font-style:italic;margin-top:2px}
+.qsr-s{font-family:"Syne",sans-serif;font-size:.82rem;font-weight:700;text-align:right;padding-top:1px}
+.bmt-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.bmt{padding:4px 11px;border-radius:100px;font-size:.7rem;font-weight:500;border:1px solid}
+.bmt.b{background:var(--sgn);color:var(--gn2);border-color:rgba(16,185,129,.2)}
+.bmt.m{background:var(--srd);color:var(--rd2);border-color:rgba(239,68,68,.2)}
+.lsr{display:grid;grid-template-columns:150px 1fr 36px;align-items:center;gap:10px;margin-bottom:8px}
+.lsr-l{font-size:.77rem;color:var(--t2)}
+.lsr-bar{background:var(--s3);border-radius:3px;height:5px;overflow:hidden}
+.lsr-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),var(--blue));transition:width 1.1s cubic-bezier(.4,0,.2,1)}
+.lsr-v{font-family:"Syne",sans-serif;font-size:.82rem;font-weight:700;text-align:right}
+.cmp-card{background:var(--s1);border:1px solid rgba(139,92,246,.22);border-radius:var(--r2);padding:1.1rem;margin-bottom:12px}
+.cmp-tit{font-family:"Syne",sans-serif;font-size:.78rem;font-weight:700;color:var(--pr2);margin-bottom:.8rem;display:flex;align-items:center;gap:7px}
+.cmp-row{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.cmp-name{font-size:.78rem;color:var(--t1);min-width:110px;font-weight:500}
+.cmp-bar{flex:1;background:var(--s3);border-radius:3px;height:7px;overflow:hidden}
+.cmp-fill{height:100%;border-radius:3px;transition:width 1s ease}
+.cmp-score{font-family:"Syne",sans-serif;font-size:.82rem;font-weight:700;min-width:34px;text-align:right}
+.watermark{text-align:center;font-size:.64rem;color:var(--t4);margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--bd)}
+.watermark span{color:var(--gd2)}
+.w-actions{display:flex;gap:7px;justify-content:center;margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--bd);flex-wrap:wrap}
+.btn-ghost{padding:8px 18px;background:transparent;border:1px solid var(--bd2);border-radius:var(--r);color:var(--t2);font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{background:var(--s2);color:var(--t1);border-color:var(--bd3)}
+.btn-gold{padding:8px 20px;background:linear-gradient(135deg,#d97706,var(--gold));border:none;border-radius:var(--r);color:#000;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:all .18s;box-shadow:0 4px 12px rgba(245,158,11,.25)}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(245,158,11,.36)}
+.btn-pdf{padding:8px 18px;background:linear-gradient(135deg,#dc2626,#b91c1c);border:none;border-radius:var(--r);color:#fff;font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .18s}
+.btn-pdf:hover{transform:translateY(-2px)}
+.btn-json{padding:8px 18px;background:transparent;border:1px solid rgba(139,92,246,.32);border-radius:var(--r);color:var(--pr2);font-family:"DM Sans",sans-serif;font-size:.78rem;font-weight:500;cursor:pointer;transition:all .18s}
+.btn-json:hover{background:var(--bpr)}
+.c-go{color:var(--gd2)}.c-bl{color:var(--bl2)}.c-gn{color:var(--gn2)}.c-rd{color:var(--rd2)}.c-pr{color:var(--pr2)}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--s3);border-radius:3px}
+@media print{.sbar,.tbar,nav,.w-actions,#confetti,.mesh,.gridbg,.kb-ov{display:none!important}.page{padding-top:0!important}}
+@media(max-width:660px){.bm-grid,.kpi-row,.sw-row,.charts-2,.sec-breakdown,.start-grid,.sci-grid{grid-template-columns:1fr}.live-card{flex-wrap:wrap}.live-lbl{min-width:unset;width:100%}.sbar.show{flex-wrap:wrap;gap:6px}.sb-met{gap:.5rem}}
+</style>
+</head><body>
+<canvas id="confetti"></canvas>
+<div class="mesh"></div><div class="gridbg"></div>
+<div class="tbar"><div class="tbar-fill" id="tFill"></div></div>
+<div class="toast" id="toast"></div>
+<div class="kb-ov" id="kbOv" onclick="closeKb(event)">
+  <div class="kb-box">
+    <div class="kb-tit">Tastaturkuerzel</div>
+    <div class="kb-row"><span class="kb-key">0-5</span><span class="kb-desc">Wissensfrage bewerten (max 5 Pkt.)</span></div>
+    <div class="kb-row"><span class="kb-key">0-3</span><span class="kb-desc">Situationsfrage bewerten (max 3 Pkt.)</span></div>
+    <div class="kb-row"><span class="kb-key">Tab</span><span class="kb-desc">Naechste Frage auswaehlen</span></div>
+    <div class="kb-row"><span class="kb-key">Pfeiltasten</span><span class="kb-desc">Zwischen Fragen navigieren</span></div>
+    <div class="kb-row"><span class="kb-key">F</span><span class="kb-desc">Frage markieren / entmarkieren</span></div>
+    <div class="kb-row"><span class="kb-key">N</span><span class="kb-desc">Notiz oeffnen / schliessen</span></div>
+    <div class="kb-row"><span class="kb-key">?</span><span class="kb-desc">Shortcuts anzeigen / verstecken</span></div>
+    <button class="kb-close" onclick="closeKb()">Schliessen</button>
+  </div>
+</div>
+<nav>
+  <div class="nav-brand">
+    <div class="nav-mark">&#127908;</div>
+    <div class="nav-txt">
+      <div class="nav-main">&#127465;&#127466; GER | NRW VC</div>
+      <div class="nav-sub">Team Bewerbung &bull; Bewertungssystem</div>
+    </div>
+  </div>
+  <div class="nav-r">
+    <div class="chip" id="nApp" style="display:none"><div class="pdot"></div><b id="nName">-</b></div>
+    <div class="chip" id="nProg" style="display:none"><span id="nAns">0</span>/25</div>
+    <div class="chip" id="nTimer" style="display:none">
+      &#9201; <span class="tv" id="timerV">00:00</span>
+      <button class="ibc" id="timerBtn" onclick="toggleTimer()">&#9208;</button>
+    </div>
+    <button class="ibc" id="soundBtn" onclick="toggleSound()">&#128266;</button>
+    <button class="ibc" onclick="toggleKb()">&#9000;</button>
+  </div>
+</nav>
+<div id="app">
+<div id="pg-start" class="page active">
+  <div class="hero-badge"><div class="pdot"></div>&#127465;&#127466; GER | NRW VC &#127908; &mdash; Offizielles Team Bewerbungssystem</div>
+  <h1 class="hero-h"><div class="t-w">Team Bewerbung</div><div class="t-g">Bewertungsbogen</div></h1>
+  <p class="hero-sub">Offizielles Bewertungstool &mdash; 15 Wissensfragen (max 5 Pkt.) + 10 Situationsfragen (max 3 Pkt.) = 105 Gesamtpunkte. Mit Auto-Save, Timer, Tastaturkuerzeln, Diagrammen und PDF-Export.</p>
+  <div class="start-grid">
+    <div class="start-form">
+      <div class="form-title">&#127908; Neues Gespraech starten</div>
+      <label class="lbl">Name des Bewerbers</label>
+      <input class="ifield" id="sName" placeholder="z.B. Max Mustermann" maxlength="60" autocomplete="off">
+      <label class="lbl">Datum</label>
+      <input class="ifield" type="date" id="sDate">
+      <label class="lbl">Interviewer / Gespraechsleiter</label>
+      <input class="ifield" id="sInter" placeholder="z.B. Admin XY" maxlength="60" autocomplete="off">
+      <label class="lbl">Allgemeine Notizen (optional)</label>
+      <textarea class="ifield" id="sNotes" placeholder="Erster Eindruck, Besonderheiten..." rows="2" style="resize:vertical;min-height:44px"></textarea>
+      <button class="btn-go" id="sBtn" onclick="doStart()" disabled>Gespraech starten &amp; Timer starten &#8594;</button>
+    </div>
+    <div class="hist-panel">
+      <div class="hist-title">&#128203; Letzte Gespraeche</div>
+      <div id="histList"><div class="hp-empty">Noch keine Gespraeche abgeschlossen.</div></div>
+      <div class="saved-note" id="savedNote"></div>
+    </div>
+  </div>
+  <div class="hstats">
+    <div><div class="hs-n">15</div><div class="hs-l">Wissensfragen</div></div>
+    <div><div class="hs-n">10</div><div class="hs-l">Situationsfragen</div></div>
+    <div><div class="hs-n">105</div><div class="hs-l">Max. Punkte</div></div>
+    <div><div class="hs-n">6</div><div class="hs-l">Bewertungsstufen</div></div>
+  </div>
+</div>
+<div id="pg-main" class="page">
+  <div class="mwrap">
+    <div class="sec-banner sb-gold" style="margin-top:1.4rem">
+      <div class="sb-icon">&#129504;</div>
+      <div class="sb-info">
+        <div class="sb-title" style="color:var(--gd2)">15 Sachliche Fragen &mdash; Wissens- und Einstellungsfragen</div>
+        <div class="sb-sub">Maximal 5 Punkte pro Frage &rarr; gesamt 75 Punkte</div>
+      </div>
+      <div class="sb-pts" style="color:var(--gd2)"><span id="s1score">0</span>/ 75 Pkt.</div>
+    </div>
+    <div class="sec-filter">
+      <button class="sf-btn on" id="sfb-all" style="background:var(--gold);border-color:var(--gold);color:#000" onclick="filterSec('all',this)">Alle <span class="sf-prog" id="sfp-all">0/25</span></button>
+      <button class="sf-btn" id="sfb-0" onclick="filterSec('0',this)">&#129504; Wissen <span class="sf-prog" id="sfp-0">0/15</span></button>
+      <button class="sf-btn" id="sfb-1" onclick="filterSec('1',this)">&#127914; Situationen <span class="sf-prog" id="sfp-1">0/10</span></button>
+      <button class="sf-btn" id="sfb-flag" onclick="filterSec('flag',this)">&#128681; Markiert <span class="sf-prog" id="sfp-flag">0</span></button>
+    </div>
+    <div class="sc-info">
+      <div class="sci-title">Punkteskala</div>
+      <div class="sci-grid">
+        <div class="sci-item"><div class="sci-pts" style="color:#9ca3af">0</div><div class="sci-lbl">Keine / falsche Antwort</div></div>
+        <div class="sci-item"><div class="sci-pts" style="color:#fcd34d">1-2</div><div class="sci-lbl">Schwach / Oberflaechlich</div></div>
+        <div class="sci-item"><div class="sci-pts" style="color:var(--bl2)">3</div><div class="sci-lbl">Solide</div></div>
+        <div class="sci-item"><div class="sci-pts" style="color:var(--gn2)">4</div><div class="sci-lbl">Sehr gut</div></div>
+        <div class="sci-item"><div class="sci-pts" style="color:var(--gd2)">5</div><div class="sci-lbl">Herausragend (nur Wissen)</div></div>
+        <div class="sci-item"><div class="sci-pts" style="color:var(--gd2)">3</div><div class="sci-lbl">Situationen Maximum</div></div>
+      </div>
+    </div>
+    <div class="kb-hint">Tipp: Frage anklicken dann 0-5 (Wissen) oder 0-3 (Situation) druecken &bull; Tab = naechste &bull; F = markieren &bull; ? = Shortcuts</div>
+    <div class="q-list" id="qList1"></div>
+    <div class="sec-banner sb-blue" id="sec2banner" style="margin-top:1.8rem">
+      <div class="sb-icon">&#127914;</div>
+      <div class="sb-info">
+        <div class="sb-title" style="color:var(--bl2)">10 Ingame-Situationsfragen &mdash; Praxisnahe Rollenspiel-Szenarien</div>
+        <div class="sb-sub">Maximal 3 Punkte pro Frage &rarr; gesamt 30 Punkte</div>
+      </div>
+      <div class="sb-pts" style="color:var(--bl2)"><span id="s2score">0</span>/ 30 Pkt.</div>
+    </div>
+    <div class="q-list" id="qList2"></div>
+    <div class="div-sep"><div class="div-line"></div><div class="div-lbl">Gespraechsnotizen</div><div class="div-line"></div></div>
+    <textarea id="sessNotes" style="width:100%;padding:10px 14px;background:var(--s1);border:1px solid var(--bd);border-radius:var(--r);color:var(--t2);font-family:DM Sans,sans-serif;font-size:.8rem;resize:vertical;outline:none;min-height:50px;transition:border-color .2s;line-height:1.55" placeholder="Allgemeine Notizen: Auffaelligkeiten, Eindruecke, Anmerkungen des Interviewers..."></textarea>
+    <div class="div-sep"><div class="div-line"></div><div class="div-lbl">Bonuspunkte</div><div class="div-line"></div></div>
+    <div class="bm-grid" id="bonusList"></div>
+    <div class="div-sep"><div class="div-line"></div><div class="div-lbl">Maluspunkte</div><div class="div-line"></div></div>
+    <div class="bm-grid" id="malusList"></div>
+    <div class="div-sep"><div class="div-line"></div><div class="div-lbl">Live-Bewertung</div><div class="div-line"></div></div>
+    <div id="liveList"></div>
+    <div style="height:85px"></div>
+  </div>
+</div>
+<div id="pg-wrap" class="page">
+  <div class="wwrap">
+    <div class="w-hero">
+      <div class="w-badge">&#10022; &#127465;&#127466; GER | NRW VC &#127908; &mdash; Abschlussbericht</div>
+      <div class="w-name" id="wName"></div>
+      <div class="w-meta" id="wDate"></div>
+      <div class="w-dur" id="wDur"></div>
+      <div class="score-box">
+        <div class="sc-big" id="wNum">0</div>
+        <div class="sc-sub">von 105 moeglichen Punkten</div>
+        <div class="verd-big vtag" id="wVerd"></div>
+        <div class="verd-explain" id="wExp"></div>
+      </div>
+    </div>
+    <div class="sec-breakdown">
+      <div class="sbd sbd-g">
+        <div class="sbd-icon">&#129504;</div>
+        <div class="sbd-title" style="color:var(--gd2)">Sachliche Fragen</div>
+        <div class="sbd-score c-go" id="wS1">0</div>
+        <div class="sbd-max">von 75 Punkten</div>
+        <div class="sbd-bar"><div class="sbd-fill" id="wS1b" style="width:0%;background:linear-gradient(90deg,var(--gold),#d97706)"></div></div>
+      </div>
+      <div class="sbd sbd-b">
+        <div class="sbd-icon">&#127914;</div>
+        <div class="sbd-title" style="color:var(--bl2)">Situationsfragen</div>
+        <div class="sbd-score c-bl" id="wS2">0</div>
+        <div class="sbd-max">von 30 Punkten</div>
+        <div class="sbd-bar"><div class="sbd-fill" id="wS2b" style="width:0%;background:linear-gradient(90deg,var(--blue),var(--bl2))"></div></div>
+      </div>
+    </div>
+    <div class="kpi-row">
+      <div class="kpi"><div class="kpi-l">Gesamt</div><div class="kpi-v c-go" id="kpi1">0</div><div class="kpi-s">von 105 Pkt.</div></div>
+      <div class="kpi"><div class="kpi-l">Bonus / Malus</div><div class="kpi-v" id="kpi2">+0</div><div class="kpi-s">Sondermodifikation</div></div>
+      <div class="kpi"><div class="kpi-l">Live-Eindruck</div><div class="kpi-v c-go" id="kpi3">0</div><div class="kpi-s">von 25 Pkt.</div></div>
+      <div class="kpi"><div class="kpi-l">Dauer</div><div class="kpi-v" id="kpi4" style="font-size:1.1rem">-</div><div class="kpi-s">Gespraechszeit</div></div>
+    </div>
+    <div class="verd-scale">
+      <div class="vs-title">Bewertungsskala &mdash; Basispunkte (ohne Bonus/Live)</div>
+      <div id="vsRows"></div>
+    </div>
+    <div class="sw-row" id="swRow"></div>
+    <div id="flaggedSec"></div>
+    <div class="fazit-card">
+      <div class="fazit-tit">&#129302; Automatisches Fazit &amp; Empfehlung</div>
+      <div class="fazit-body" id="fazitBody"></div>
+    </div>
+    <div class="charts-2">
+      <div class="chart-card"><div class="cc-tit">Punkte-Vergleich</div><div class="cc-sub">Sektions-Scores vs. Maximum</div><div class="cc-box"><canvas id="doughChart"></canvas></div></div>
+      <div class="chart-card"><div class="cc-tit">Score-Verteilung</div><div class="cc-sub">Anzahl Antworten je Punktwert</div><div class="cc-box"><canvas id="barChart"></canvas></div></div>
+    </div>
+    <div class="chart-card" style="margin-bottom:11px">
+      <div class="cc-tit">Score-Verlauf</div><div class="cc-sub">W1-W15 = Wissensfragen (0-5) &bull; S1-S10 = Situationsfragen (0-3) &bull; gestrichelt = Durchschnitt</div>
+      <div class="cc-boxw"><canvas id="lineChart"></canvas></div>
+    </div>
+    <div id="cmpSec"></div>
+    <div class="det-card">
+      <div class="det-head" onclick="toggleDet(this)"><div class="det-icon">&#129504;</div><div class="det-tit">Sachliche Fragen (15) &mdash; Alle Antworten &amp; Notizen</div><div class="det-chev">&#9660;</div></div>
+      <div class="det-body" id="qs1Body"></div>
+    </div>
+    <div class="det-card">
+      <div class="det-head" onclick="toggleDet(this)"><div class="det-icon">&#127914;</div><div class="det-tit">Situationsfragen (10) &mdash; Alle Antworten &amp; Notizen</div><div class="det-chev">&#9660;</div></div>
+      <div class="det-body" id="qs2Body"></div>
+    </div>
+    <div class="det-card">
+      <div class="det-head" onclick="toggleDet(this)"><div class="det-icon">&#9878;</div><div class="det-tit">Bonus &amp; Malus</div><div class="det-chev">&#9660;</div></div>
+      <div class="det-body" id="bmBody"></div>
+    </div>
+    <div class="det-card">
+      <div class="det-head" onclick="toggleDet(this)"><div class="det-icon">&#9672;</div><div class="det-tit">Live-Bewertung</div><div class="det-chev">&#9660;</div></div>
+      <div class="det-body" id="lvBody"></div>
+    </div>
+    <div class="watermark">&#169; <span>&#127465;&#127466; GER | NRW VC &#127908;</span> &mdash; Team Bewerbungssystem &bull; Alle Rechte vorbehalten</div>
+    <div class="w-actions">
+      <button class="btn-ghost" onclick="showPg('pg-main')">&#8592; Bearbeiten</button>
+      <button class="btn-ghost" onclick="window.print()">&#128424; Drucken</button>
+      <button class="btn-json" onclick="exportJSON()">&#11015; JSON</button>
+      <button class="btn-pdf" onclick="exportPDF()">&#128196; PDF Export</button>
+      <button class="btn-gold" onclick="newSession()">Neuer Bewerber &#8594;</button>
+    </div>
+  </div>
+</div>
+</div>
+<div class="sbar" id="sbar">
+  <div class="sb-met">
+    <div class="met"><div class="met-l">Wissen</div><div class="met-v c-go" id="sbS1">0/75</div></div>
+    <div class="met-div"></div>
+    <div class="met"><div class="met-l">Situation</div><div class="met-v c-bl" id="sbS2">0/30</div></div>
+    <div class="met-div"></div>
+    <div class="met"><div class="met-l">B/M</div><div class="met-v" id="sbBM">+0</div></div>
+    <div class="met-div"></div>
+    <div class="met"><div class="met-l">Live</div><div class="met-v c-go" id="sbLive">0/25</div></div>
+    <div class="met-div"></div>
+    <div class="met"><div class="met-l">Gesamt</div><div class="met-v" style="color:#fff" id="sbTot">0</div></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:7px">
+    <div class="save-ind" id="saveInd"><div class="sdot"></div>Gespeichert</div>
+    <div class="vtag vt-none" id="sbVerd">-</div>
+  </div>
+  <button class="btn-abs" id="wrapBtn" onclick="buildWrap()" disabled>Abschlussbericht &#8594;</button>
+</div>
+<script>
+const QS1=[
+  "Was versteht man unter Meta-Gaming und warum ist es problematisch?",
+  "Erklaere was RDM und VDM bedeutet.",
+  "Wie verhaeltst du dich, wenn du waehrend des RP von jemandem mit einer Waffe bedroht wirst?",
+  "Was ist Power-Gaming?",
+  "Was bedeutet Crash-RP?",
+  "Wie verhaeltst du dich, wenn du eine Regel nicht genau verstehst oder sogar eine brichst?",
+  "Was ist bei Geiselnahmen zu beachten?",
+  "Warum ist es wichtig, sich an die New Life Rule NLR zu halten, und was bedeutet sie?",
+  "Welche Regeln gelten fuer OOC-Kommunikation im RP?",
+  "Was ist bei einem Bankraub oder Juwelierraub zwingend erforderlich, damit er regelkonform ist?",
+  "Wie gehst du mit einem Spieler um, der dich im Supportgespraech beleidigt?",
+  "Was darf ein Admin nicht tun, auch wenn er im Dienst ist?",
+  "Wofuer ist der Schuss-Call da und wann darf er entfallen?",
+  "Warum ist es wichtig, bei Supportfaellen Clips oder Beweise zu haben?",
+  "Was sind deine Pflichten als Admin laut dem allgemeinen Team-Regelwerk?"
+];
+const QS2=[
+  "Ein Spieler flüchtet absichtlich in eine Safezone um einer Festnahme zu umgehen – wie reagierst du?",
+  "Zwei Gangs schiessen ohne RP-Hintergrund – wie reagierst du?",
+  "Ein Spieler nutzt OOC-Infos bei einem Ueberfall – wie reagierst du?",
+  "Du bekommst eine Meldung ueber einen Hacker, hast aber keinen klaren Beweis – was machst du?",
+  "Ein anderer Admin teleportiert grundlos Leute – wie gehst du damit um?",
+  "Ein Spieler widersetzt sich trotz gezogener Waffe deinem Befehl – wie reagierst du?",
+  "Ein Spieler verlaesst mitten im RP den Server (Combat-Logging) – wie gehst du vor?",
+  "Ein Spieler nutzt Taschen-RP, um ploetzlich eine Waffe zu ziehen – wie reagierst du im Support?",
+  "Du wirst von einem High-Teamler zu Unrecht beschuldigt – wie gehst du professionell damit um?",
+  "Ein High-Teamler beleidigt dich – was wirst du machen?"
+];
+const VERDICTS=[
+  {min:95,max:105,icon:"&#11088;",label:"Herausragend",tc:"vt-top",color:"var(--gd2)",
+   desc:"Absoluter Top-Kandidat. Sehr reflektiert, konstant starke Antworten, hohe RP-Reife, klare Fuehrungsqualitaet."},
+  {min:88,max:94,icon:"&#9989;",label:"Sehr gut",tc:"vt-sehr",color:"var(--gn2)",
+   desc:"Klar geeignet. Ueberwiegend sehr starke Leistungen, nur geringe Schwaechenr. Echter Mehrwert fuers Team."},
+  {min:78,max:87,icon:"&#128077;",label:"Bestanden",tc:"vt-best",color:"var(--bl2)",
+   desc:"Geeignet. Gute Grundlagen und Verstaendnis, aber noch Luft nach oben (Tiefe, Konsequenz, Sicherheit)."},
+  {min:68,max:77,icon:"&#9888;&#65039;",label:"Knapp bestanden",tc:"vt-knapp",color:"var(--pr2)",
+   desc:"Grenzbereich. Potenzial vorhanden, jedoch erkennbare Unsicherheiten. Weitere Pruefung empfohlen."},
+  {min:58,max:67,icon:"&#10060;",label:"Nicht bestanden",tc:"vt-nicht",color:"var(--rd2)",
+   desc:"Mehrere relevante Schwaechenr. Reife, Regelverstaendnis oder Verantwortungsbewusstsein unzureichend."},
+  {min:0,max:57,icon:"&#128683;",label:"Deutlich ungeeignet",tc:"vt-deut",color:"#fca5a5",
+   desc:"Wichtige Grundlagen fehlen (Regeln, Verhalten, Konfliktloesung). Aktuell nicht einsetzbar."}
+];
+const BONUS=[
+  {label:"Hervorragendes Regelwissen",pts:5},
+  {label:"Sehr professionelles Auftreten",pts:5},
+  {label:"Ausgezeichnete Situationsreaktion",pts:5},
+  {label:"Besondere Teamfaehigkeit",pts:5}
+];
+const MALUS=[
+  {label:"Arrogantes / respektloses Verhalten",pts:-5},
+  {label:"Luecken im Grundregelwerk",pts:-5},
+  {label:"Widerspruechliche Aussagen",pts:-10},
+  {label:"Unehrlichkeit",pts:-10}
+];
+const LIVE_A=["Auftreten & Professionalitaet","Sprachqualitaet im VC","Ruhe unter Druck","Teamgefuehl & Sympathie","Ehrlichkeit & Reflektiertheit"];
+const LSK="nrwvc_s_v1",LSH="nrwvc_h_v1";
+
+let S={name:"",date:"",inter:"",sessionNotes:"",
+  s1:new Array(15).fill(null),s2:new Array(10).fill(null),
+  n1:new Array(15).fill(""),n2:new Array(10).fill(""),
+  f1:new Array(15).fill(false),f2:new Array(10).fill(false),
+  bonusCnt:new Array(BONUS.length).fill(0),malusCnt:new Array(MALUS.length).fill(0),
+  live:new Array(5).fill(0),timerSec:0,finalSec:0};
+let timerIv=null,timerRun=false,charts={},soundOn=true,audioCtx=null;
+let selQ={sec:0,idx:-1},curFilter="all",saveT=null;
+
+function defS(){return{name:"",date:"",inter:"",sessionNotes:"",s1:new Array(15).fill(null),s2:new Array(10).fill(null),n1:new Array(15).fill(""),n2:new Array(10).fill(""),f1:new Array(15).fill(false),f2:new Array(10).fill(false),bonusCnt:new Array(BONUS.length).fill(0),malusCnt:new Array(MALUS.length).fill(0),live:new Array(5).fill(0),timerSec:0,finalSec:0};}
+function saveSess(){try{localStorage.setItem(LSK,JSON.stringify(S));}catch(e){}showSI();}
+function loadSess(){try{const r=localStorage.getItem(LSK);if(!r)return false;const d=JSON.parse(r);if(!d.name)return false;S=Object.assign(defS(),d);return true;}catch(e){return false;}}
+function clearSS(){try{localStorage.removeItem(LSK);}catch(e){}}
+function getH(){try{return JSON.parse(localStorage.getItem(LSH)||"[]");}catch(e){return[];}}
+function addH(e){try{let h=getH();h.unshift(e);if(h.length>10)h=h.slice(0,10);localStorage.setItem(LSH,JSON.stringify(h));}catch(e){}}
+function showSI(){const el=document.getElementById("saveInd");if(!el)return;el.style.color="var(--gn2)";clearTimeout(saveT);saveT=setTimeout(()=>{if(el)el.style.color="var(--t4)";},1800);}
+
+function getAC(){if(!audioCtx){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)();}catch(e){}}return audioCtx;}
+function playSound(t){
+  if(!soundOn)return;
+  try{const ac=getAC();if(!ac)return;if(ac.state==="suspended")ac.resume();const now=ac.currentTime;
+    if(t==="click"){const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(600,now);g.gain.setValueAtTime(0.04,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.07);o.start(now);o.stop(now+0.07);}
+    else if(t==="high"){const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(440,now);o.frequency.setValueAtTime(660,now+0.07);o.frequency.setValueAtTime(880,now+0.15);g.gain.setValueAtTime(0.06,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.32);o.start(now);o.stop(now+0.32);}
+    else if(t==="bonus"){const o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(500,now);o.frequency.linearRampToValueAtTime(800,now+0.14);g.gain.setValueAtTime(0.05,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.22);o.start(now);o.stop(now+0.22);}
+    else if(t==="malus"){const o=ac.createOscillator(),g=ac.createGain();o.type="sawtooth";o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(260,now);o.frequency.linearRampToValueAtTime(130,now+0.16);g.gain.setValueAtTime(0.04,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.2);o.start(now);o.stop(now+0.2);}
+    else if(t==="flag"){const o=ac.createOscillator(),g=ac.createGain();o.type="triangle";o.connect(g);g.connect(ac.destination);o.frequency.setValueAtTime(700,now);g.gain.setValueAtTime(0.05,now);g.gain.exponentialRampToValueAtTime(0.001,now+0.12);o.start(now);o.stop(now+0.12);}
+    else if(t==="success"){[523,659,784,1047].forEach((f,i)=>{const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);const tt=now+i*0.1;o.frequency.setValueAtTime(f,tt);g.gain.setValueAtTime(0.08,tt);g.gain.exponentialRampToValueAtTime(0.001,tt+0.26);o.start(tt);o.stop(tt+0.26);});}
+  }catch(e){}
+}
+function toggleSound(){soundOn=!soundOn;const b=document.getElementById("soundBtn");b.innerHTML=soundOn?"&#128266;":"&#128263;";b.classList.toggle("muted",!soundOn);}
+
+function startTimer(){if(timerIv)return;timerRun=true;document.getElementById("timerBtn").innerHTML="&#9208;";timerIv=setInterval(()=>{S.timerSec++;const m=Math.floor(S.timerSec/60),s=S.timerSec%60;const el=document.getElementById("timerV");el.textContent=pad(m)+":"+pad(s);el.className="tv"+(S.timerSec>=3600?" c":S.timerSec>=1800?" w":"");if(S.timerSec%30===0)saveSess();},1000);}
+function pauseTimer(){if(timerIv){clearInterval(timerIv);timerIv=null;}timerRun=false;document.getElementById("timerBtn").innerHTML="&#9654;";}
+function toggleTimer(){timerRun?pauseTimer():startTimer();}
+function stopTimer(){pauseTimer();S.finalSec=S.timerSec;}
+function pad(n){return String(n).padStart(2,"0");}
+function fmtTime(s){if(!s)return"00:00 min";const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60;return h>0?h+"h "+m+"m "+sc+"s":pad(m)+":"+pad(sc)+" min";}
+
+let toastT2;
+function showToast(msg){const el=document.getElementById("toast");el.textContent=msg;el.classList.add("show");clearTimeout(toastT2);toastT2=setTimeout(()=>el.classList.remove("show"),2200);}
+function toggleKb(){document.getElementById("kbOv").classList.toggle("show");}
+function closeKb(e){if(!e||e.target===document.getElementById("kbOv"))document.getElementById("kbOv").classList.remove("show");}
+
+function verdictInfo(pts){for(const v of VERDICTS){if(pts>=v.min&&pts<=v.max)return v;}return VERDICTS[VERDICTS.length-1];}
+
+function renderHistory(){
+  const hist=getH(),el=document.getElementById("histList"),sn=document.getElementById("savedNote");
+  try{const raw=localStorage.getItem(LSK);if(raw){const d=JSON.parse(raw);if(d.name){const ans=(d.s1||[]).filter(x=>x!==null).length+(d.s2||[]).filter(x=>x!==null).length;sn.innerHTML="&#128190; Unterbrochen: <strong style=color:var(--gd2)>"+d.name+"</strong> ("+ans+"/25) &mdash; <a href=# onclick=resumeSess(event) style=color:var(--bl2)>Fortsetzen</a>";}}}catch(e){}
+  if(!hist.length){el.innerHTML="<div class=hp-empty>Noch keine Gespraeche abgeschlossen.</div>";return;}
+  el.innerHTML=hist.map((h,i)=>{const v=verdictInfo(h.grand);return"<div class=hentry onclick=loadHist("+i+")><div><div class=he-name>"+h.name+"</div><div class=he-meta>"+(h.date||"-")+(h.inter?" &bull; "+h.inter:"")+" &bull; "+fmtTime(h.finalSec)+"</div></div><div style=text-align:right><div class=he-score style=color:"+v.color+">"+h.grand+"</div><div class=he-verd style=color:"+v.color+">"+v.icon+" "+v.label+"</div></div></div>";}).join("");
+}
+function loadHist(i){const h=getH()[i];if(!h)return;S=Object.assign(defS(),h);buildWrap(true);}
+function resumeSess(e){e.preventDefault();if(!loadSess())return;document.getElementById("nName").textContent=S.name;["nApp","nProg","nTimer"].forEach(id=>document.getElementById(id).style.display="flex");buildAll();restoreUI();showPg("pg-main");document.getElementById("sbar").classList.add("show");startTimer();update();showToast("Gespraech fortgesetzt");}
+
+document.getElementById("sDate").value=new Date().toISOString().split("T")[0];
+document.getElementById("sName").addEventListener("input",function(){document.getElementById("sBtn").disabled=this.value.trim().length<2;});
+document.getElementById("sName").addEventListener("keydown",e=>{if(e.key==="Enter")doStart();});
+
+function doStart(){
+  const n=document.getElementById("sName").value.trim();if(n.length<2)return;
+  S=defS();S.name=n;S.date=document.getElementById("sDate").value;S.inter=document.getElementById("sInter").value.trim();S.sessionNotes=document.getElementById("sNotes").value;
+  document.getElementById("nName").textContent=n;
+  ["nApp","nProg","nTimer"].forEach(id=>document.getElementById(id).style.display="flex");
+  buildAll();showPg("pg-main");document.getElementById("sbar").classList.add("show");startTimer();update();saveSess();
+}
+
+function buildAll(){buildQ(1);buildQ(2);buildBonus();buildMalus();buildLive();}
+
+function buildQ(sec){
+  const qs=sec===1?QS1:QS2;const maxPts=sec===1?5:3;
+  const el=document.getElementById("qList"+sec);el.innerHTML="";
+  const dotColor=sec===1?"var(--gold)":"var(--blue)";
+  qs.forEach((q,i)=>{
+    const d=document.createElement("div");d.className="qc qc-"+(sec===1?"5":"3");d.id="q"+sec+"_"+i;d.dataset.sec=sec;d.dataset.idx=i;
+    const btns=Array.from({length:maxPts+1},(_,v)=>"<button class=sbb id=sb"+sec+"_"+i+"_"+v+" onclick=setScore("+sec+","+i+","+v+")>"+v+"</button>").join("");
+    d.innerHTML="<div class=q-num>"+(i+1)+"<div class=qdot style=background:"+dotColor+"></div></div>"
+      +"<div class=q-body><div class=qt onclick=selectQ("+sec+","+i+")>"+q+"</div>"
+      +"<div class=q-acts><span class=ntb id=ntb"+sec+"_"+i+" onclick=toggleNote("+sec+","+i+")>+ Notiz</span>"
+      +"<button class=flb onclick=toggleFlag("+sec+","+i+")>&#128681;</button></div>"
+      +"<textarea class=qnote id=qn"+sec+"_"+i+" placeholder=Anmerkung... oninput=saveNote("+sec+","+i+",this.value) rows=2></textarea></div>"
+      +"<div class=q-right><div class=q-btns>"+btns+"</div><div class=max-b>max "+maxPts+"</div></div>";
+    el.appendChild(d);
+    d.style.opacity="0";d.style.transform="translateY(7px)";
+    setTimeout(()=>{d.style.transition="opacity .25s ease,transform .25s ease";d.style.opacity="1";d.style.transform="translateY(0)";},i*12);
+  });
+}
+
+function buildBonus(){const el=document.getElementById("bonusList");el.innerHTML="";BONUS.forEach((b,i)=>{const d=document.createElement("div");d.className="bmc";d.id="bc"+i;d.innerHTML="<div class=bm-lbl>"+b.label+"</div><div class="bm-pts c-gn">+"+b.pts+"</div><div class=bm-ctrl><button class="cc m" onclick=chg('b',"+i+",-1)>-</button><span class=ccnt id=bcnt"+i+">0</span><button class="cc p" onclick=chg('b',"+i+",1)>+</button></div>";el.appendChild(d);});}
+function buildMalus(){const el=document.getElementById("malusList");el.innerHTML="";MALUS.forEach((m,i)=>{const d=document.createElement("div");d.className="bmc";d.id="mc"+i;d.innerHTML="<div class=bm-lbl>"+m.label+"</div><div class="bm-pts c-rd">"+m.pts+"</div><div class=bm-ctrl><button class="cc m" onclick=chg('m',"+i+",-1)>-</button><span class=ccnt id=mcnt"+i+">0</span><button class="cc p" onclick=chg('m',"+i+",1)>+</button></div>";el.appendChild(d);});}
+function buildLive(){const el=document.getElementById("liveList");el.innerHTML="";LIVE_A.forEach((a,i)=>{const d=document.createElement("div");d.className="live-card";const stars=[0,1,2,3,4].map(s=>"<span class=star id=st"+i+"_"+s+">&#9733;</span>").join("");d.innerHTML="<div class=live-lbl>"+a+"</div><div class=live-track><input type=range min=0 max=5 step=1 value="+(S.live[i]||0)+" oninput=setLive("+i+",this.value)><div class=stars>"+stars+"</div></div><div class=live-vw><span id=lv"+i+">"+(S.live[i]||0)+"</span>/5</div>";el.appendChild(d);for(let s=0;s<5;s++){setTimeout(()=>{const st=document.getElementById("st"+i+"_"+s);if(st)st.className="star"+(s<(S.live[i]||0)?" on":"");},60);}});}
+
+function restoreUI(){
+  S.s1.forEach((v,i)=>{if(v===null)return;for(let x=0;x<=5;x++){const b=document.getElementById("sb1_"+i+"_"+x);if(b){b.className="sbb";if(x===v)b.classList.add("a"+v);}}applyQC("q1_"+i,v,5);});
+  S.s2.forEach((v,i)=>{if(v===null)return;for(let x=0;x<=3;x++){const b=document.getElementById("sb2_"+i+"_"+x);if(b){b.className="sbb";if(x===v)b.classList.add("b"+v);}}applyQC("q2_"+i,v,3);});
+  S.n1.forEach((n,i)=>{if(!n)return;const ta=document.getElementById("qn1_"+i);if(ta){ta.value=n;ta.classList.add("open");const nb=document.getElementById("ntb1_"+i);if(nb)nb.textContent="- Notiz";}});
+  S.n2.forEach((n,i)=>{if(!n)return;const ta=document.getElementById("qn2_"+i);if(ta){ta.value=n;ta.classList.add("open");const nb=document.getElementById("ntb2_"+i);if(nb)nb.textContent="- Notiz";}});
+  S.f1.forEach((f,i)=>{if(f){const c=document.getElementById("q1_"+i);if(c)c.classList.add("flagged");}});
+  S.f2.forEach((f,i)=>{if(f){const c=document.getElementById("q2_"+i);if(c)c.classList.add("flagged");}});
+  S.bonusCnt.forEach((cnt,i)=>{const el=document.getElementById("bcnt"+i);if(el)el.textContent=cnt;const card=document.getElementById("bc"+i);if(card)card.classList.toggle("bon",cnt>0);});
+  S.malusCnt.forEach((cnt,i)=>{const el=document.getElementById("mcnt"+i);if(el)el.textContent=cnt;const card=document.getElementById("mc"+i);if(card)card.classList.toggle("mal",cnt>0);});
+  S.live.forEach((v,i)=>{const lv=document.getElementById("lv"+i);if(lv)lv.textContent=v;const rng=document.querySelector("#liveList .live-card:nth-child("+(i+1)+") input");if(rng)rng.value=v;for(let s=0;s<5;s++){const st=document.getElementById("st"+i+"_"+s);if(st)st.className="star"+(s<v?" on":"");}});
+  const sn=document.getElementById("sessNotes");if(sn)sn.value=S.sessionNotes||"";
+  const td=document.getElementById("timerV");if(td)td.textContent=pad(Math.floor(S.timerSec/60))+":"+pad(S.timerSec%60);
+}
+
+function filterSec(which,btn){
+  curFilter=which;
+  document.querySelectorAll(".sf-btn").forEach(b=>{b.classList.remove("on");b.style.cssText="";});
+  btn.classList.add("on");
+  if(which==="all")btn.style.cssText="background:var(--gold);border-color:var(--gold);color:#000";
+  else if(which==="0")btn.style.cssText="background:var(--gold);border-color:var(--gold);color:#000";
+  else if(which==="1")btn.style.cssText="background:var(--blue);border-color:var(--blue);color:#fff";
+  else btn.style.cssText="background:var(--rd2);border-color:var(--rd2);color:#fff";
+  const b2=document.getElementById("sec2banner");
+  QS1.forEach((_,i)=>{const c=document.getElementById("q1_"+i);if(!c)return;c.classList.toggle("hidden-q",!(which==="all"||which==="0"||(which==="flag"&&S.f1[i])));});
+  QS2.forEach((_,i)=>{const c=document.getElementById("q2_"+i);if(!c)return;c.classList.toggle("hidden-q",!(which==="all"||which==="1"||(which==="flag"&&S.f2[i])));});
+  if(b2)b2.style.display=(which==="all"||which==="1")?"flex":"none";
+  selQ={sec:0,idx:-1};
+}
+
+function selectQ(sec,idx){
+  if(selQ.idx>=0){const p=document.getElementById("q"+selQ.sec+"_"+selQ.idx);if(p)p.classList.remove("active-q");}
+  selQ={sec,idx};const card=document.getElementById("q"+sec+"_"+idx);
+  if(card){card.classList.add("active-q");card.scrollIntoView({behavior:"smooth",block:"nearest"});}
+}
+function toggleNote(sec,idx){const ta=document.getElementById("qn"+sec+"_"+idx),nb=document.getElementById("ntb"+sec+"_"+idx);const o=ta.classList.toggle("open");if(nb)nb.textContent=o?"- Notiz":"+ Notiz";if(o)ta.focus();}
+function saveNote(sec,idx,v){if(sec===1)S.n1[idx]=v;else S.n2[idx]=v;schedSave();}
+function toggleFlag(sec,idx){
+  if(sec===1)S.f1[idx]=!S.f1[idx];else S.f2[idx]=!S.f2[idx];
+  const c=document.getElementById("q"+sec+"_"+idx);if(c)c.classList.toggle("flagged",sec===1?S.f1[idx]:S.f2[idx]);
+  playSound("flag");schedSave();
+  showToast((sec===1?S.f1[idx]:S.f2[idx])?"Frage "+(idx+1)+" markiert":"Markierung entfernt");
+}
+
+function applyQC(id,v,maxPts){
+  const c=document.getElementById(id);if(!c)return;
+  const wasA=c.classList.contains("active-q"),wasF=c.classList.contains("flagged"),wasH=c.classList.contains("hidden-q");
+  c.className=(id.startsWith("q1_")?"qc qc-5":"qc qc-3")+" done";
+  if(wasA)c.classList.add("active-q");if(wasF)c.classList.add("flagged");if(wasH)c.classList.add("hidden-q");
+  if(v===maxPts)c.classList.add("sc-max");
+  else if(v>=Math.ceil(maxPts*0.65))c.classList.add("sc-hi");
+  else if(v>=1&&v<=Math.floor(maxPts*0.4))c.classList.add("sc-lo");
+  else if(v===0)c.classList.add("sc-0");
+}
+
+function setScore(sec,idx,v){
+  if(sec===1)S.s1[idx]=v;else S.s2[idx]=v;
+  const maxPts=sec===1?5:3,pfx=sec===1?"a":"b";
+  for(let x=0;x<=maxPts;x++){const b=document.getElementById("sb"+sec+"_"+idx+"_"+x);if(b){b.className="sbb";if(x===v)b.classList.add(pfx+v);}}
+  applyQC("q"+sec+"_"+idx,v,maxPts);
+  playSound(v===maxPts?"high":"click");update();schedSave();
+}
+
+function chg(type,i,delta){
+  if(type==="b"){S.bonusCnt[i]=Math.max(0,S.bonusCnt[i]+delta);document.getElementById("bcnt"+i).textContent=S.bonusCnt[i];document.getElementById("bc"+i).classList.toggle("bon",S.bonusCnt[i]>0);if(delta>0){playSound("bonus");showToast("+"+BONUS[i].pts+" Bonus: "+BONUS[i].label);}}
+  else{S.malusCnt[i]=Math.max(0,S.malusCnt[i]+delta);document.getElementById("mcnt"+i).textContent=S.malusCnt[i];document.getElementById("mc"+i).classList.toggle("mal",S.malusCnt[i]>0);if(delta>0){playSound("malus");showToast(MALUS[i].pts+" Malus: "+MALUS[i].label);}}
+  update();schedSave();
+}
+function setLive(i,v){S.live[i]=parseInt(v);document.getElementById("lv"+i).textContent=v;for(let s=0;s<5;s++){const el=document.getElementById("st"+i+"_"+s);if(el)el.className="star"+(s<parseInt(v)?" on":"");}playSound("click");update();schedSave();}
+function schedSave(){clearTimeout(saveT);saveT=setTimeout(saveSess,800);}
+
+document.addEventListener("keydown",e=>{
+  if(e.target.tagName==="INPUT"||e.target.tagName==="TEXTAREA")return;
+  const pg=document.querySelector(".page.active");if(!pg||pg.id!=="pg-main")return;
+  if(e.key==="?"){toggleKb();return;}
+  if(e.key==="Escape"){if(document.getElementById("kbOv").classList.contains("show")){closeKb();return;}selQ={sec:0,idx:-1};return;}
+  const vis=[];
+  QS1.forEach((_,i)=>{const c=document.getElementById("q1_"+i);if(c&&!c.classList.contains("hidden-q"))vis.push({sec:1,idx:i});});
+  QS2.forEach((_,i)=>{const c=document.getElementById("q2_"+i);if(c&&!c.classList.contains("hidden-q"))vis.push({sec:2,idx:i});});
+  if(!vis.length)return;
+  const cp=vis.findIndex(x=>x.sec===selQ.sec&&x.idx===selQ.idx);
+  if(e.key==="Tab"){e.preventDefault();if(cp===-1){const f=vis[0];selectQ(f.sec,f.idx);}else{const ni=e.shiftKey?Math.max(0,cp-1):Math.min(vis.length-1,cp+1);const n=vis[ni];selectQ(n.sec,n.idx);}return;}
+  if(e.key==="ArrowDown"){e.preventDefault();if(cp<vis.length-1){const n=vis[cp+1];selectQ(n.sec,n.idx);}return;}
+  if(e.key==="ArrowUp"){e.preventDefault();if(cp>0){const n=vis[cp-1];selectQ(n.sec,n.idx);}return;}
+  if(selQ.idx<0&&vis.length){selectQ(vis[0].sec,vis[0].idx);return;}
+  if(selQ.idx>=0){const maxPts=selQ.sec===1?5:3;const v=parseInt(e.key);if(!isNaN(v)&&v>=0&&v<=maxPts){setScore(selQ.sec,selQ.idx,v);showToast("Frage "+(selQ.idx+1)+" = "+v+" Pkt.");return;}if(e.key.toLowerCase()==="f"){toggleFlag(selQ.sec,selQ.idx);return;}if(e.key.toLowerCase()==="n"){toggleNote(selQ.sec,selQ.idx);return;}}
+});
+
+function calc(){
+  const s1=S.s1.reduce((a,v)=>a+(v||0),0),s2=S.s2.reduce((a,v)=>a+(v||0),0);
+  const bon=BONUS.reduce((a,b,i)=>a+S.bonusCnt[i]*b.pts,0),mal=MALUS.reduce((a,m,i)=>a+S.malusCnt[i]*m.pts,0);
+  const bm=bon+mal,live=S.live.reduce((a,v)=>a+v,0),grand=s1+s2+bm+live;
+  const a1=S.s1.filter(x=>x!==null).length,a2=S.s2.filter(x=>x!==null).length;
+  return{s1,s2,bon,mal,bm,live,grand,a1,a2,ans:a1+a2};
+}
+
+function update(){
+  const{s1,s2,bm,live,grand,a1,a2,ans}=calc();
+  document.getElementById("tFill").style.width=(ans/25*100)+"%";
+  document.getElementById("nAns").textContent=ans;
+  document.getElementById("sbS1").textContent=s1+"/75";
+  document.getElementById("sbS2").textContent=s2+"/30";
+  const bEl=document.getElementById("sbBM");bEl.textContent=(bm>=0?"+":"")+bm;bEl.style.color=bm<0?"var(--rd2)":bm>0?"var(--gn2)":"var(--t2)";
+  document.getElementById("sbLive").textContent=live+"/25";
+  document.getElementById("sbTot").textContent=grand;
+  const v=verdictInfo(grand);const vEl=document.getElementById("sbVerd");vEl.className="vtag "+v.tc;vEl.innerHTML=v.icon+" "+v.label;
+  document.getElementById("wrapBtn").disabled=ans<3;
+  const s1e=document.getElementById("s1score");if(s1e)s1e.textContent=s1+" ";
+  const s2e=document.getElementById("s2score");if(s2e)s2e.textContent=s2+" ";
+  const fCnt=S.f1.filter(Boolean).length+S.f2.filter(Boolean).length;
+  const sfpA=document.getElementById("sfp-all");if(sfpA)sfpA.textContent=ans+"/25";
+  const sfp0=document.getElementById("sfp-0");if(sfp0)sfp0.textContent=a1+"/15";
+  const sfp1=document.getElementById("sfp-1");if(sfp1)sfp1.textContent=a2+"/10";
+  const sfpF=document.getElementById("sfp-flag");if(sfpF)sfpF.textContent=fCnt;
+}
+function makeFazit(grand,s1,s2,bm,live,a1,a2){
+  const v=verdictInfo(grand);
+  const p1=Math.round(s1/75*100),p2=Math.round(s2/30*100);
+  const c5=S.s1.filter(x=>x===5).length,c3=S.s2.filter(x=>x===3).length;
+  const c0=S.s1.filter(x=>x===0).length+S.s2.filter(x=>x===0).length;
+  const fCnt=S.f1.filter(Boolean).length+S.f2.filter(Boolean).length;
+  let f="";
+  if(grand>=95)f+="<p><strong class=fam>Absoluter Top-Kandidat.</strong> "+S.name+" hat mit "+grand+" Punkten ein herausragendes Gespraech gefuehrt. Regelwissen, Situationsreaktion und Auftreten auf hoechstem Niveau.</p>";
+  else if(grand>=88)f+="<p><strong class=fgn>Klar geeignet.</strong> "+S.name+" ueberzeugte mit "+grand+" Punkten in fast allen Bereichen. Echter Mehrwert fuers Team ist zu erwarten.</p>";
+  else if(grand>=78)f+="<p><strong class=fbl>Bestanden.</strong> "+S.name+" zeigt gute Grundlagen ("+grand+" Punkte). Das Verstaendnis ist vorhanden, in manchen Bereichen besteht noch Entwicklungspotenzial.</p>";
+  else if(grand>=68)f+="<p><strong class=fpr>Knapp bestanden.</strong> "+S.name+" liegt mit "+grand+" Punkten im Grenzbereich. Potenzial ist erkennbar, jedoch bestehen noch Unsicherheiten. Weitere Pruefung empfohlen.</p>";
+  else if(grand>=58)f+="<p><strong class=frd>Nicht bestanden.</strong> "+S.name+" konnte mit "+grand+" Punkten in wichtigen Bereichen nicht ueberzeugen. Reife oder Regelverstaendnis unzureichend.</p>";
+  else f+="<p><strong class=frd>Deutlich ungeeignet.</strong> Mit "+grand+" Punkten fehlen "+S.name+" grundlegende Kenntnisse und/oder Verhaltensvoraussetzungen fuer das Team.</p>";
+  f+="<p><strong>Wissensfragen:</strong> "+s1+"/75 ("+p1+"%) &mdash; ";
+  if(p1>=85)f+="<span class=fgn>Hervorragendes Regelwissen.</span>";
+  else if(p1>=65)f+="<span class=fbl>Solides Grundwissen.</span>";
+  else f+="<span class=frd>Deutliche Wissensluecken erkennbar.</span>";
+  f+="</p><p><strong>Situationsfragen:</strong> "+s2+"/30 ("+p2+"%) &mdash; ";
+  if(p2>=85)f+="<span class=fgn>Sehr gute Situationseinschaetzung.</span>";
+  else if(p2>=60)f+="<span class=fbl>Angemessene Reaktionen, Verbesserungspotenzial vorhanden.</span>";
+  else f+="<span class=frd>Schwaechenr in der praktischen Situationsreaktion.</span>";
+  f+="</p>";
+  if(c5>=4||c3>=3)f+="<p><strong class=fam>Maximalpunktzahl</strong> mehrfach erreicht ("+c5+"x 5/5, "+c3+"x 3/3) &mdash; starke Einzelleistungen.</p>";
+  if(c0>=4)f+="<p><strong class=frd>"+c0+"x keine verwertbare Antwort</strong> &mdash; mehrere Fragen blieben unbeantwortet.</p>";
+  if(bm<=-10)f+="<p><strong class=frd>Malus-Einfluss ("+bm+" Pkt.)</strong> &mdash; beobachtete Verhaltensweisen haben die Bewertung gesenkt.</p>";
+  if(bm>=10)f+="<p><strong class=fgn>Bonus-Einfluss (+"+bm+" Pkt.)</strong> &mdash; besondere Staerken wurden honoriert.</p>";
+  if(live>=18)f+="<p><strong class=fam>Hervorragender Live-Eindruck ("+live+"/25)</strong> &mdash; Auftreten im VC sehr uberzeugend.</p>";
+  else if(live<=8&&(a1+a2)>0)f+="<p><strong class=fam>Live-Eindruck ("+live+"/25)</strong> ausbaufaehig &mdash; VC-Auftritt sollte weiterentwickelt werden.</p>";
+  if(fCnt>0)f+="<p><strong class=fam>"+fCnt+" Frage"+(fCnt>1?"n":"")+" markiert</strong> &mdash; fuer Nachbesprechung vorgemerkt.</p>";
+  if(S.inter)f+="<p style=font-size:.73rem;color:var(--t3)>Gespräch gefuehrt von: <strong>"+S.inter+"</strong> &bull; Dauer: "+fmtTime(S.finalSec||S.timerSec)+"</p>";
+  return f;
+}
+
+function buildSW(){
+  const el=document.getElementById("swRow");el.innerHTML="";
+  const all=[...S.s1.map((v,i)=>({sec:1,idx:i,q:QS1[i],v,max:5})),...S.s2.map((v,i)=>({sec:2,idx:i,q:QS2[i],v,max:3}))].filter(x=>x.v!==null);
+  if(!all.length){el.style.display="none";return;}el.style.display="grid";
+  const byN=[...all].sort((a,b)=>(b.v/b.max)-(a.v/a.max));
+  const top3=byN.slice(0,3),bot3=[...byN].reverse().slice(0,3);
+  const sc=document.createElement("div");sc.className="sw-card";sc.style.cssText="border-color:rgba(16,185,129,.2);background:var(--sgn)";
+  sc.innerHTML="<div class=sw-head><span>&#128170;</span><div class=sw-tit style=color:var(--gn2)>Staerkste Antworten</div></div>"+top3.map(x=>{const c=x.v/x.max>=0.8?"var(--gn2)":x.v/x.max>=0.5?"var(--bl2)":"var(--gd2)";return"<div class=sw-item><div class=sw-num>"+(x.sec===1?"W":"S")+(x.idx+1)+"</div><div class=sw-txt>"+x.q.substring(0,55)+"...</div><div class=sw-sc style=color:"+c+">"+x.v+"/"+x.max+"</div></div>";}).join("");
+  el.appendChild(sc);
+  const wc=document.createElement("div");wc.className="sw-card";wc.style.cssText="border-color:rgba(239,68,68,.2);background:var(--srd)";
+  wc.innerHTML="<div class=sw-head><span>&#9888;&#65039;</span><div class=sw-tit style=color:var(--rd2)>Schwaechste Antworten</div></div>"+bot3.map(x=>{const c=x.v===0?"var(--rd2)":x.v/x.max<=0.4?"var(--gd2)":"var(--t2)";return"<div class=sw-item><div class=sw-num>"+(x.sec===1?"W":"S")+(x.idx+1)+"</div><div class=sw-txt>"+x.q.substring(0,55)+"...</div><div class=sw-sc style=color:"+c+">"+x.v+"/"+x.max+"</div></div>";}).join("");
+  el.appendChild(wc);
+}
+
+function buildVS(grand){
+  const el=document.getElementById("vsRows");el.innerHTML="";
+  VERDICTS.forEach(v=>{
+    const isCur=grand>=v.min&&grand<=v.max;
+    const r=document.createElement("div");r.className="vs-row";
+    if(isCur)r.style.background="rgba(245,158,11,.06)";
+    r.innerHTML="<div class=vs-range>"+v.min+"-"+v.max+"</div><div class=vs-icon>"+v.icon+"</div><div class=vs-label style=color:"+v.color+">"+v.label+"</div><div class=vs-desc>"+v.desc+"</div>"+(isCur?"<div class=vs-cur>Aktuell</div>":"");
+    el.appendChild(r);
+  });
+}
+
+function buildFlagSec(){
+  const el=document.getElementById("flaggedSec");el.innerHTML="";
+  const fl=[...S.f1.map((f,i)=>({sec:1,idx:i,f})),...S.f2.map((f,i)=>({sec:2,idx:i,f}))].filter(x=>x.f);
+  if(!fl.length)return;
+  const card=document.createElement("div");card.className="flagged-sec";
+  card.innerHTML="<div class=fs-tit>&#128681; Markierte Fragen ("+fl.length+")</div>"+fl.map(x=>{const q=x.sec===1?QS1[x.idx]:QS2[x.idx];const sc=x.sec===1?S.s1[x.idx]:S.s2[x.idx];const mx=x.sec===1?5:3;return"<div class=fs-item><div class=fs-num>"+(x.sec===1?"W":"S")+(x.idx+1)+"</div><div style=flex:1;font-size:.72rem;color:var(--t2)>"+q.substring(0,72)+"...</div><div style=font-family:Syne,sans-serif;font-size:.8rem;font-weight:700;color:var(--gd2)>"+(sc!==null?sc+"/"+mx:"-")+"</div></div>";}).join("");
+  el.appendChild(card);
+}
+
+function buildWrap(isH=false){
+  if(!isH){stopTimer();saveSess();}
+  const{s1,s2,bm,live,grand,a1,a2,ans}=calc();
+  const v=verdictInfo(grand);
+  document.getElementById("wName").textContent=S.name;
+  const dStr=S.date?new Date(S.date+"T00:00").toLocaleDateString("de-DE",{weekday:"long",year:"numeric",month:"long",day:"numeric"}):new Date().toLocaleDateString("de-DE");
+  document.getElementById("wDate").textContent="Gespraech vom "+dStr+(S.inter?" | Interviewer: "+S.inter:"");
+  document.getElementById("wDur").innerHTML="Gespraechsdauer: <span>"+fmtTime(S.finalSec)+"</span>";
+  const numEl=document.getElementById("wNum");numEl.textContent="0";
+  let cur=0;const target=grand;const step=Math.max(1,Math.ceil(Math.abs(target)/80));
+  const ti=setInterval(()=>{cur=target>=0?Math.min(cur+step,target):Math.max(cur-step,target);numEl.textContent=cur;if(cur===target)clearInterval(ti);},18);
+  const wv=document.getElementById("wVerd");wv.className="verd-big vtag "+v.tc;wv.innerHTML=v.icon+" "+v.label;
+  document.getElementById("wExp").textContent=v.desc;
+  document.getElementById("wS1").textContent=s1;document.getElementById("wS2").textContent=s2;
+  setTimeout(()=>{const b1=document.getElementById("wS1b");if(b1)b1.style.width=(s1/75*100)+"%";const b2=document.getElementById("wS2b");if(b2)b2.style.width=(s2/30*100)+"%";},220);
+  document.getElementById("kpi1").textContent=grand;
+  const k2=document.getElementById("kpi2");k2.textContent=(bm>=0?"+":"")+bm;k2.style.color=bm<0?"var(--rd2)":bm>0?"var(--gn2)":"var(--t2)";
+  document.getElementById("kpi3").textContent=live;document.getElementById("kpi4").textContent=fmtTime(S.finalSec);
+  buildVS(grand);buildSW();buildFlagSec();
+  document.getElementById("fazitBody").innerHTML=makeFazit(grand,s1,s2,bm,live,a1,a2);
+  buildQSBody(1);buildQSBody(2);buildBMBody();buildLVBody();buildCmpSec();
+  showPg("pg-wrap");window.scrollTo({top:0,behavior:"smooth"});
+  setTimeout(buildCharts,380);
+  if(!isH){
+    if(grand>=95){playSound("success");setTimeout(launchConfetti,700);}
+    addH({name:S.name,date:dStr,inter:S.inter||"",grand,finalSec:S.finalSec,s1,s2,s1arr:S.s1,s2arr:S.s2,bonusCnt:S.bonusCnt,malusCnt:S.malusCnt,live:S.live,f1:S.f1,f2:S.f2,n1:S.n1,n2:S.n2,sessionNotes:S.sessionNotes});
+    clearSS();
+  }
+}
+
+function buildCharts(){
+  try{
+    Object.values(charts).forEach(c=>{try{c&&c.destroy();}catch(e){}});charts={};
+    const gc="rgba(255,255,255,.04)",tc="rgba(148,163,184,.85)";
+    Chart.defaults.color=tc;Chart.defaults.font.family="DM Sans,sans-serif";
+    const{s1,s2}=calc();
+    charts.dough=new Chart(document.getElementById("doughChart"),{type:"doughnut",
+      data:{labels:["Wissen ("+s1+"/75)","Situation ("+s2+"/30)","Offen"],
+        datasets:[{data:[s1,s2,Math.max(0,105-s1-s2)],backgroundColor:["rgba(245,158,11,.7)","rgba(59,130,246,.7)","rgba(255,255,255,.05)"],borderColor:["var(--gold)","var(--blue)","transparent"],borderWidth:2}]},
+      options:{responsive:true,maintainAspectRatio:false,animation:{duration:1100,easing:"easeOutQuart"},cutout:"62%",
+        plugins:{legend:{position:"bottom",labels:{padding:12,font:{size:10},color:tc}},tooltip:{callbacks:{label:ctx=>ctx.label+": "+ctx.raw+" Pkt."}}}}});
+    const d5=[0,1,2,3,4,5].map(v=>S.s1.filter(s=>s===v).length);
+    const d3=[0,1,2,3].map(v=>S.s2.filter(s=>s===v).length);
+    charts.bar=new Chart(document.getElementById("barChart"),{type:"bar",
+      data:{labels:["0","1","2","3","4","5"],datasets:[
+        {label:"Wissen (0-5)",data:d5,backgroundColor:"rgba(245,158,11,.55)",borderColor:"var(--gold)",borderWidth:1,borderRadius:4},
+        {label:"Situation (0-3)",data:[...d3,0,0].slice(0,6),backgroundColor:"rgba(59,130,246,.55)",borderColor:"var(--blue)",borderWidth:1,borderRadius:4}]},
+      options:{responsive:true,maintainAspectRatio:false,animation:{duration:900,easing:"easeOutBounce"},
+        scales:{x:{grid:{color:gc},ticks:{color:tc}},y:{grid:{color:gc},ticks:{color:tc,stepSize:1},min:0}},
+        plugins:{legend:{position:"top",labels:{padding:10,font:{size:9},color:tc}}}}});
+    const ld1=S.s1.map(v=>v!==null?v:null);
+    const ld2=[...new Array(15).fill(null),...S.s2.map(v=>v!==null?v:null)];
+    const v1=ld1.filter(x=>x!==null);const avg1=v1.length?v1.reduce((a,v)=>a+v,0)/v1.length:0;
+    const v2=S.s2.filter(x=>x!==null);const avg2=v2.length?v2.reduce((a,v)=>a+v,0)/v2.length:0;
+    const lbls=[...QS1.map((_,i)=>"W"+(i+1)),...QS2.map((_,i)=>"S"+(i+1))];
+    charts.line=new Chart(document.getElementById("lineChart"),{type:"line",
+      data:{labels:lbls,datasets:[
+        {label:"Wissen",data:ld1,borderColor:"rgba(245,158,11,.7)",backgroundColor:"rgba(245,158,11,.07)",pointBackgroundColor:"var(--gold)",pointBorderColor:"transparent",pointRadius:4,tension:0.32,fill:true,spanGaps:true},
+        {label:"Situation",data:ld2,borderColor:"rgba(59,130,246,.7)",backgroundColor:"rgba(59,130,246,.07)",pointBackgroundColor:"var(--blue)",pointBorderColor:"transparent",pointRadius:4,tension:0.32,fill:true,spanGaps:true},
+        {label:"Avg W",data:[...new Array(15).fill(+avg1.toFixed(2)),...new Array(10).fill(null)],borderColor:"rgba(245,158,11,.28)",borderDash:[5,4],borderWidth:1.5,pointRadius:0,fill:false,spanGaps:false},
+        {label:"Avg S",data:[...new Array(15).fill(null),...new Array(10).fill(+avg2.toFixed(2))],borderColor:"rgba(59,130,246,.28)",borderDash:[5,4],borderWidth:1.5,pointRadius:0,fill:false,spanGaps:false}]},
+      options:{responsive:true,maintainAspectRatio:false,animation:{duration:1300,easing:"easeOutQuart"},
+        scales:{x:{grid:{color:gc},ticks:{color:tc,maxTicksLimit:25,font:{size:9}}},y:{grid:{color:gc},ticks:{color:tc,stepSize:1},min:0,max:5}},
+        plugins:{legend:{display:false},tooltip:{callbacks:{title:ctx=>ctx[0].label,label:ctx=>ctx.dataset.label+": "+(ctx.raw!==null?ctx.raw:"-")}}}}});
+  }catch(err){console.error("Charts:",err);}
+}
+
+function buildQSBody(sec){
+  const qs=sec===1?QS1:QS2,scores=sec===1?S.s1:S.s2,notes=sec===1?S.n1:S.n2,flags=sec===1?S.f1:S.f2;
+  const el=document.getElementById("qs"+sec+"Body");el.innerHTML="";
+  qs.forEach((q,i)=>{
+    const s=scores[i];const c=s===null?"var(--t4)":s>0?(s===(sec===1?5:3)?"var(--gd2)":s>=(sec===1?4:2)?"var(--gn2)":"var(--bl2)"):"#4b5563";
+    const r=document.createElement("div");r.className="qsr";
+    r.innerHTML="<div class=qsr-n>"+(sec===1?"W":"S")+(i+1)+"</div><div class=qsr-t>"+q+(notes[i]?"<div class=qsr-note>"+notes[i]+"</div>":"")+(flags[i]?" &#128681;":"")+"</div><div class=qsr-s style=color:"+c+">"+(s!==null?s+(sec===1?"/5":"/3"):"–")+"</div>";
+    el.appendChild(r);
+  });
+}
+
+function buildBMBody(){
+  const el=document.getElementById("bmBody");el.innerHTML="";
+  const w=document.createElement("div");w.className="bmt-wrap";let any=false;
+  BONUS.forEach((b,i)=>{for(let x=0;x<S.bonusCnt[i];x++){any=true;const t=document.createElement("span");t.className="bmt b";t.textContent="+"+b.pts+" "+b.label;w.appendChild(t);}});
+  MALUS.forEach((m,i)=>{for(let x=0;x<S.malusCnt[i];x++){any=true;const t=document.createElement("span");t.className="bmt m";t.textContent=m.pts+" "+m.label;w.appendChild(t);}});
+  if(!any){const sp=document.createElement("span");sp.style="font-size:.78rem;color:var(--t3)";sp.textContent="Keine Bonus- oder Maluspunkte vergeben.";w.appendChild(sp);}
+  el.appendChild(w);
+}
+
+function buildLVBody(){
+  const el=document.getElementById("lvBody");el.innerHTML="";
+  LIVE_A.forEach((a,i)=>{
+    const r=document.createElement("div");r.className="lsr";
+    const pct=S.live[i]/5*100;const c=S.live[i]>=4?"var(--gn2)":S.live[i]>=3?"var(--bl2)":S.live[i]>=1?"var(--gd2)":"var(--t3)";
+    r.innerHTML="<div class=lsr-l>"+a+"</div><div class=lsr-bar><div class=lsr-fill id=lsf"+i+" style=width:0%></div></div><div class=lsr-v style=color:"+c+">"+S.live[i]+"/5</div>";
+    el.appendChild(r);setTimeout(()=>{const f=document.getElementById("lsf"+i);if(f)f.style.width=pct+"%";},80+i*70);
+  });
+}
+
+function buildCmpSec(){
+  const el=document.getElementById("cmpSec");el.innerHTML="";
+  const hist=getH().filter(h=>h.name!==S.name).slice(0,5);if(!hist.length)return;
+  const{grand}=calc();
+  const all=[{name:S.name+" (aktuell)",grand,isMe:true},...hist.map(h=>({name:h.name,grand:h.grand,isMe:false}))].sort((a,b)=>b.grand-a.grand);
+  const maxG=Math.max(...all.map(h=>h.grand),105);
+  const card=document.createElement("div");card.className="cmp-card";
+  card.innerHTML="<div class=cmp-tit>Vergleich mit anderen Bewerbern</div>"+all.map(h=>{const pct=Math.round(h.grand/maxG*100);const vv=verdictInfo(h.grand);return"<div class=cmp-row><div class=cmp-name style="+(h.isMe?"color:#fff;font-weight:700":"")+">"+h.name+"</div><div class=cmp-bar><div class=cmp-fill style=width:0%;background:"+(h.isMe?"linear-gradient(90deg,var(--gold),var(--blue))":"linear-gradient(90deg,var(--gn2),var(--bl2))")+" data-pct="+pct+"></div></div><div class=cmp-score style=color:"+vv.color+">"+h.grand+"</div></div>";}).join("");
+  el.appendChild(card);setTimeout(()=>{document.querySelectorAll(".cmp-fill").forEach(b=>{b.style.width=b.dataset.pct+"%";});},220);
+}
+
+function launchConfetti(){
+  const canvas=document.getElementById("confetti");canvas.width=window.innerWidth;canvas.height=window.innerHeight;canvas.style.display="block";
+  const ctx=canvas.getContext("2d");
+  const colors=["#f59e0b","#fbbf24","#3b82f6","#60a5fa","#10b981","#34d399","#8b5cf6","#ef4444","#ec4899","#fff","#fde68a"];
+  const pieces=Array.from({length:240},()=>({x:Math.random()*canvas.width,y:-20-Math.random()*canvas.height*.5,w:Math.random()*11+4,h:Math.random()*6+3,color:colors[Math.floor(Math.random()*colors.length)],rot:Math.random()*360,rs:Math.random()*6-3,vx:Math.random()*5-2.5,vy:Math.random()*3+2,alpha:1,fade:Math.random()*.005+.002,circ:Math.random()>.5}));
+  let raf;
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);let alive=false;pieces.forEach(p=>{if(p.alpha<=0)return;alive=true;ctx.save();ctx.globalAlpha=p.alpha;ctx.fillStyle=p.color;ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);if(p.circ){ctx.beginPath();ctx.arc(0,0,p.w/2,0,Math.PI*2);ctx.fill();}else{ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);}ctx.restore();p.x+=p.vx;p.y+=p.vy;p.rot+=p.rs;p.vy+=.045;p.alpha-=p.fade;});if(alive)raf=requestAnimationFrame(draw);else{canvas.style.display="none";}}
+  raf=requestAnimationFrame(draw);setTimeout(()=>{cancelAnimationFrame(raf);canvas.style.display="none";},9000);
+}
+
+function exportPDF(){
+  try{
+    const{s1,s2,bm,live,grand}=calc();const v=verdictInfo(grand);
+    const{jsPDF}=window.jspdf;const doc=new jsPDF({orientation:"portrait",unit:"mm",format:"a4"});
+    const PW=210,M=15;let y=M;
+    const fill=(r,g,b)=>doc.setFillColor(r,g,b);
+    const txt=(t,x,cy,sz,bold,r,gr,b2)=>{doc.setFontSize(sz||9);doc.setFont("helvetica",bold?"bold":"normal");doc.setTextColor(r||226,gr||232,b2||240);doc.text(String(t),x,cy);};
+    const chkY=(n)=>{if(y+n>282){doc.addPage();y=M;fill(5,8,15);doc.rect(0,0,PW,297,"F");}};
+    const sep=()=>{doc.setDrawColor(51,65,85);doc.setLineWidth(.25);doc.line(M,y,PW-M,y);y+=3;};
+    const h2=(t)=>{chkY(12);txt(t,M,y,8.5,true,245,158,11);y+=3;sep();};
+    fill(5,8,15);doc.rect(0,0,PW,297,"F");
+    fill(13,21,32);doc.rect(0,0,PW,44,"F");
+    fill(245,158,11);doc.rect(0,0,PW,2,"F");
+    txt("GER | NRW VC - TEAM BEWERBUNG",M,12,14,true,245,158,11);
+    txt("Offizieller Bewertungsbogen - Abschlussbericht",M,19,8,false,100,116,139);
+    txt(S.name,M,28,11,true,241,245,249);
+    const dStr2=S.date?new Date(S.date+"T00:00").toLocaleDateString("de-DE",{year:"numeric",month:"long",day:"numeric"}):new Date().toLocaleDateString("de-DE");
+    txt(dStr2+(S.inter?" | Interviewer: "+S.inter:"")+"  |  Dauer: "+fmtTime(S.finalSec),M,36,7.5,false,100,116,139);
+    doc.setFontSize(7.5);doc.setFont("helvetica","bold");doc.setTextColor(245,158,11);doc.text("(C) GER | NRW VC",PW-M,36,{align:"right"});
+    y=49;
+    fill(22,33,52);doc.rect(M,y,PW-M*2,26,"F");
+    doc.setDrawColor(245,158,11);doc.setLineWidth(.35);doc.rect(M,y,PW-M*2,26,"S");
+    doc.setFontSize(24);doc.setFont("helvetica","bold");doc.setTextColor(245,158,11);doc.text(String(grand),PW/2,y+14,{align:"center"});
+    txt("VON 105 PUNKTEN",PW/2,y+20,6.5,false,100,116,139);
+    const vcol=grand>=95?[245,158,11]:grand>=88?[52,211,153]:grand>=78?[96,165,250]:grand>=68?[167,139,250]:grand>=58?[248,113,113]:[252,165,165];
+    doc.setFontSize(9);doc.setFont("helvetica","bold");doc.setTextColor(...vcol);doc.text(v.label,PW/2+20,y+20);
+    y+=32;
+    const hw=(PW-M*2)/2;
+    fill(22,33,52);doc.rect(M,y,hw-2,14,"F");fill(22,33,52);doc.rect(M+hw+2,y,hw-2,14,"F");
+    doc.setFontSize(6);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);doc.text("SACHLICHE FRAGEN",M+hw/2-8,y+5);doc.text("SITUATIONSFRAGEN",M+hw+2+hw/2-8,y+5);
+    doc.setFontSize(11);doc.setFont("helvetica","bold");doc.setTextColor(245,158,11);doc.text(s1+"/75",M+hw/2-5,y+11,{align:"center"});
+    doc.setTextColor(96,165,250);doc.text(s2+"/30",M+hw+2+hw/2-5,y+11,{align:"center"});
+    y+=20;
+    try{const dc=document.getElementById("doughChart");if(dc){doc.addImage(dc.toDataURL("image/png"),"PNG",M,y,60,50);}const bc=document.getElementById("barChart");if(bc){doc.addImage(bc.toDataURL("image/png"),"PNG",M+65,y,120,50);}y+=56;}catch(e){y+=4;}
+    h2("BEWERTUNGSSKALA");
+    VERDICTS.forEach(vr=>{chkY(8);const isC=grand>=vr.min&&grand<=vr.max;if(isC){fill(40,32,8);doc.rect(M,y-3.5,PW-M*2,7,"F");}doc.setFontSize(7);doc.setFont("helvetica",isC?"bold":"normal");doc.setTextColor(100,116,139);doc.text(vr.min+"-"+vr.max,M,y);const vc2=vr.tc==="vt-top"?[245,158,11]:vr.tc==="vt-sehr"?[52,211,153]:vr.tc==="vt-best"?[96,165,250]:vr.tc==="vt-knapp"?[167,139,250]:vr.tc==="vt-nicht"?[248,113,113]:[252,165,165];doc.setTextColor(...vc2);doc.text(vr.label,M+16,y);doc.setTextColor(148,163,184);doc.text(vr.desc.substring(0,85),M+56,y);y+=6;});y+=2;
+    h2("SACHLICHE FRAGEN (15 x max. 5 Punkte = 75)");
+    QS1.forEach((q,i)=>{chkY(10);const s=S.s1[i];const c=s===null?[100,116,139]:s>=4?[52,211,153]:s>=3?[96,165,250]:s>=1?[245,158,11]:[75,85,99];doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);doc.text("W"+String(i+1).padStart(2,"0"),M,y);doc.setTextColor(148,163,184);doc.text((q.length>86?q.substring(0,86)+"...":q),M+8,y);doc.setFont("helvetica","bold");doc.setTextColor(...c);doc.text(s!==null?String(s):"–",PW-M,y,{align:"right"});if(S.f1[i]){doc.setTextColor(245,158,11);doc.text("F",PW-M-5,y);}if(S.n1[i]){y+=4;doc.setFont("helvetica","italic");doc.setTextColor(100,116,139);doc.text("  "+S.n1[i].substring(0,95),M+8,y);}y+=5;});
+    h2("SITUATIONSFRAGEN (10 x max. 3 Punkte = 30)");
+    QS2.forEach((q,i)=>{chkY(10);const s=S.s2[i];const c=s===null?[100,116,139]:s===3?[245,158,11]:s===2?[52,211,153]:s===1?[96,165,250]:[75,85,99];doc.setFontSize(6.5);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);doc.text("S"+String(i+1).padStart(2,"0"),M,y);doc.setTextColor(148,163,184);doc.text((q.length>86?q.substring(0,86)+"...":q),M+8,y);doc.setFont("helvetica","bold");doc.setTextColor(...c);doc.text(s!==null?String(s):"–",PW-M,y,{align:"right"});if(S.f2[i]){doc.setTextColor(245,158,11);doc.text("F",PW-M-5,y);}if(S.n2[i]){y+=4;doc.setFont("helvetica","italic");doc.setTextColor(100,116,139);doc.text("  "+S.n2[i].substring(0,95),M+8,y);}y+=5;});
+    chkY(22);y+=3;h2("BONUS & MALUS");
+    let bmAny=false;
+    BONUS.forEach((b,i)=>{if(S.bonusCnt[i]>0){bmAny=true;chkY(6);doc.setFontSize(7.5);doc.setFont("helvetica","normal");doc.setTextColor(52,211,153);doc.text("+"+b.pts+"  x"+S.bonusCnt[i]+"  "+b.label+"  = +"+(b.pts*S.bonusCnt[i]),M+3,y);y+=5;}});
+    MALUS.forEach((m,i)=>{if(S.malusCnt[i]>0){bmAny=true;chkY(6);doc.setFontSize(7.5);doc.setFont("helvetica","normal");doc.setTextColor(248,113,113);doc.text(m.pts+"  x"+S.malusCnt[i]+"  "+m.label+"  = "+(m.pts*S.malusCnt[i]),M+3,y);y+=5;}});
+    if(!bmAny){doc.setFontSize(7.5);doc.setFont("helvetica","normal");doc.setTextColor(100,116,139);doc.text("Keine Bonus- oder Maluspunkte.",M+3,y);y+=5;}
+    y+=4;chkY(25);h2("LIVE-BEWERTUNG");
+    LIVE_A.forEach((a,i)=>{chkY(8);doc.setFontSize(7.5);doc.setFont("helvetica","normal");doc.setTextColor(148,163,184);doc.text(a,M+3,y);const bW=55,filled=(S.live[i]/5)*bW;fill(29,45,68);doc.rect(M+58,y-3.5,bW,3.5,"F");if(filled>0){fill(245,158,11);doc.rect(M+58,y-3.5,filled,3.5,"F");}doc.setFont("helvetica","bold");doc.setTextColor(245,158,11);doc.text(S.live[i]+"/5",M+58+bW+3,y);y+=5.5;});
+    if((S.sessionNotes||"").trim()){y+=3;chkY(20);h2("GESPRAEOCHSNOTIZEN");doc.setFontSize(7.5);doc.setFont("helvetica","italic");doc.setTextColor(148,163,184);const lines=doc.splitTextToSize(S.sessionNotes,PW-M*2-6);lines.forEach(l=>{chkY(6);doc.text(l,M+3,y);y+=5;});}
+    const tp=doc.internal.getNumberOfPages();
+    for(let p=1;p<=tp;p++){doc.setPage(p);doc.setDrawColor(51,65,85);doc.setLineWidth(.25);doc.line(M,284,PW-M,284);doc.setFontSize(6);doc.setFont("helvetica","normal");doc.setTextColor(71,85,105);doc.text("(C) GER | NRW VC - Team Bewerbungssystem | "+new Date().toLocaleString("de-DE"),M,289);doc.text("Seite "+p+" / "+tp,PW-M,289,{align:"right"});}
+    doc.save("NRW_VC_"+S.name.replace(/\s+/g,"_")+"_"+(S.date||"heute")+".pdf");
+    showToast("PDF exportiert");
+  }catch(err){console.error("PDF:",err);showToast("PDF-Fehler: "+err.message);}
+}
+
+function exportJSON(){
+  try{
+    const{grand,s1,s2}=calc();
+    const data={meta:{server:"GER | NRW VC",name:S.name,inter:S.inter,date:S.date,duration:fmtTime(S.finalSec),grand,s1,s2,verdict:verdictInfo(grand).label,exportedAt:new Date().toISOString()},s1:S.s1,s2:S.s2,n1:S.n1,n2:S.n2,f1:S.f1,f2:S.f2,bonusCnt:S.bonusCnt,malusCnt:S.malusCnt,live:S.live,sessionNotes:S.sessionNotes};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="NRW_VC_"+S.name.replace(/\s+/g,"_")+"_"+(S.date||"heute")+".json";a.click();URL.revokeObjectURL(a.href);
+    showToast("JSON exportiert");
+  }catch(e){showToast("JSON-Fehler: "+e.message);}
+}
+
+function toggleDet(h){h.classList.toggle("open");h.nextElementSibling.classList.toggle("open");}
+function showPg(id){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(id).classList.add("active");}
+function newSession(){stopTimer();clearSS();document.getElementById("sName").value="";document.getElementById("sInter").value="";document.getElementById("sNotes").value="";document.getElementById("sBtn").disabled=true;["nApp","nProg","nTimer"].forEach(id=>document.getElementById(id).style.display="none");document.getElementById("sbar").classList.remove("show");document.getElementById("tFill").style.width="0%";document.getElementById("timerV").textContent="00:00";selQ={sec:0,idx:-1};renderHistory();showPg("pg-start");}
+
+document.getElementById("sDate").value=new Date().toISOString().split("T")[0];
+renderHistory();update();
+</script>
+</body>
+</html>
