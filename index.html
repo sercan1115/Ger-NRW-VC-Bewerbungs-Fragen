@@ -1074,8 +1074,8 @@ function showHint(sec,idx){
   openOv("ovHint");
 }
 
-function buildBonus(){const el=document.getElementById("bonusList");el.innerHTML="";BONUS.forEach((b,i)=>{const d=document.createElement("div");d.className="bmc";d.id="bc"+i;d.innerHTML="<div class=bm-lbl>"+b.label+"</div><div class="bm-pts c-gn">+"+b.pts+"</div><div class=bm-ctrl><button class="cc m" onclick=chg('b',"+i+",-1)>-</button><span class=ccnt id=bcnt"+i+">0</span><button class="cc p" onclick=chg('b',"+i+",1)>+</button></div>";el.appendChild(d);});}
-function buildMalus(){const el=document.getElementById("malusList");el.innerHTML="";MALUS.forEach((m,i)=>{const d=document.createElement("div");d.className="bmc";d.id="mc"+i;d.innerHTML="<div class=bm-lbl>"+m.label+"</div><div class="bm-pts c-rd">"+m.pts+"</div><div class=bm-ctrl><button class="cc m" onclick=chg('m',"+i+",-1)>-</button><span class=ccnt id=mcnt"+i+">0</span><button class="cc p" onclick=chg('m',"+i+",1)>+</button></div>";el.appendChild(d);});}
+function buildBonus(){const el=document.getElementById("bonusList");el.innerHTML="";BONUS.forEach((b,i)=>{const d=document.createElement("div");d.className="bmc";d.id="bc"+i;d.innerHTML="<div class=bm-lbl>"+b.label+"</div><div class='bm-pts c-gn'>+"+b.pts+"</div><div class=bm-ctrl><button class='cc m' onclick=chg('b',"+i+",-1)>-</button><span class=ccnt id=bcnt"+i+">0</span><button class='cc p' onclick=chg('b',"+i+",1)>+</button></div>";el.appendChild(d);});}
+function buildMalus(){const el=document.getElementById("malusList");el.innerHTML="";MALUS.forEach((m,i)=>{const d=document.createElement("div");d.className="bmc";d.id="mc"+i;d.innerHTML="<div class=bm-lbl>"+m.label+"</div><div class='bm-pts c-rd'>"+m.pts+"</div><div class=bm-ctrl><button class='cc m' onclick=chg('m',"+i+",-1)>-</button><span class=ccnt id=mcnt"+i+">0</span><button class='cc p' onclick=chg('m',"+i+",1)>+</button></div>";el.appendChild(d);});}
 function buildLive(){const el=document.getElementById("liveList");el.innerHTML="";LIVE_A.forEach((a,i)=>{const d=document.createElement("div");d.className="live-card";const stars=[0,1,2,3,4].map(s=>"<span class=star id=st"+i+"_"+s+">&#9733;</span>").join("");d.innerHTML="<div class=live-lbl>"+a+"</div><div class=live-track><input type=range min=0 max=5 step=1 value="+(S.live[i]||0)+" oninput=setLive("+i+",this.value)><div class=stars>"+stars+"</div></div><div class=live-vw><span id=lv"+i+">"+(S.live[i]||0)+"</span>/5</div>";el.appendChild(d);for(let s=0;s<5;s++){setTimeout(()=>{const st=document.getElementById("st"+i+"_"+s);if(st)st.className="star"+(s<(S.live[i]||0)?" on":"");},60);}});}
 
 function restoreUI(){
@@ -1328,8 +1328,7 @@ function buildSnDisplay(){
   const el=document.getElementById("snDisplay");el.innerHTML="";
   const notes=(S.sessionNotes||"").trim();if(!notes)return;
   const card=document.createElement("div");card.className="sn-disp";
-  card.innerHTML="<div class=sn-tit>&#128203; Gespraechsnotizen</div><div class=sn-text>"+notes.replace(/
-/g,"<br>")+"</div>";
+  card.innerHTML="<div class=sn-tit>&#128203; Gespraechsnotizen</div><div class=sn-text>"+notes.replace(/\n/g,"<br>")+"</div>";
   el.appendChild(card);
 }
 
@@ -1486,7 +1485,7 @@ function renderArchive(){
       "<span>&#9201; "+fmtTime(h.finalSec)+"</span>"+
       "<span>W: "+(h.s1||0)+" | S: "+(h.s2||0)+"</span></div></div>"+
       "<div class=ae-score-wrap><div class=ae-score style=color:"+v.color+">"+h.grand+"</div><div class=ae-verd style=color:"+v.color+">"+v.icon+" "+v.label+"</div></div>"+
-      "<div class=ae-actions><button class=btn-sm onclick=viewArchEntry("+realIdx+");event.stopPropagation()>Bericht</button><button class="btn-sm del" onclick=deleteEntry("+realIdx+");event.stopPropagation()>&#128465;</button></div>"+
+      "<div class=ae-actions><button class=btn-sm onclick=viewArchEntry("+realIdx+");event.stopPropagation()>Bericht</button><button class='btn-sm del' onclick=deleteEntry("+realIdx+");event.stopPropagation()>&#128465;</button></div>"+
       "</div>";
   }).join("");
 }
